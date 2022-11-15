@@ -1,0 +1,1 @@
+[%ProductoID: 1, Nombre: Up-600, Precio: 70.0, Fecha_caducidad: 2032-10-12, %ProductoID: 2, Nombre: Artiflex, Precio: 90.0, Fecha_caducidad: 2032-10-12]

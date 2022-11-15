@@ -1,0 +1,1 @@
+[%Empleado: Nif: U1234561T, Nombre: Jorge, Apellido: Torres, Telefono: 105746923, Direccion: Calle Alonso Cano 13 , Email: jorge@gmail.com, Fecha_Nac: 2002-08-31, %Empleado: Nif: Q8092134T, Nombre: Camilo, Apellido: Pardo, Telefono: 635989812, Direccion: Calle Rodolfo Alvarez 14, Email: Camilo@gmail.com, Fecha_Nac: 2002-08-31]

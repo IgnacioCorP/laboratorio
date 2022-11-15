@@ -1,0 +1,1 @@
+[%Cliente: Nif: Y8087469Q, Nombre: Nicolás, Apellido: Correa, Telefono: 666666666, Email: nachitoficopal@gmail.com, Fecha_nac: 2002-08-31, %Cliente: Nif: Q8092134T, Nombre: Mónica, Apellido: Suarez, Telefono: 777777777, Email: monisu@gmail.com, Fecha_nac: 2002-08-31]
