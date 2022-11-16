@@ -32,7 +32,7 @@ public class ManejoDeArchivos {
          
     }
     
-    public static void escribirArchivo(String nombre, ArrayList contenido){
+    public static void escribirArchivo(String nombre, String contenido){
         PrintWriter salida = null;
           File archivo = new File (nombre);
         try {//Se que el fichero existe
@@ -52,7 +52,7 @@ public class ManejoDeArchivos {
         try {
            
             salida = new PrintWriter(new FileWriter(nombre,true));
-            salida.println(contenido);
+            salida.print(contenido);
         } catch (IOException ex) {
             
         }finally{

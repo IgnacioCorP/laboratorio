@@ -24,9 +24,13 @@ import java.util.List;
 public class ClienteDao implements InterfazCli {
     
     private static final String SQL_SELECT = "SELECT * FROM cliente";
-    private static final String SQL_INSERT = "INSERT into cliente(Nif,Nombre,Apellido,Telefono,Email,Fecha_nac) VALUES(?,?,?,?,?,?)";
-    private static final String SQL_UPDATE = "UPDATE cliente SET Nombre = ?, Apellido = ?, Telefono = ?, Email = ?, Fecha_nac = ?   where Nif = ?";
+    private static final String SQL_INSERT = "INSERT into cliente(Nif,Nombre,Apellido,Telefono,Email,Fecha_nac,Clave) VALUES(?,?,?,?,?,?,AES_ENCRYPT(?,'key'))";
+    private static final String SQL_UPDATE = "UPDATE cliente SET Nombre = ?, Apellido = ?, Telefono = ?, Email = ?, Fecha_nac = ?, Clave = AES_ENCRYPT(?,'key')  where Nif = ?";
     private static final String SQL_DELETE = "DELETE FROM cliente where Nif = ?";
+    private static final String SQL_DECRYPT = "SELECT Nif, Nombre, Apellido,Telefono,Email,Fecha_nac,CAST(AES_DECRYPT(Clave,'key')AS CHAR)AS Clave FROM cliente";
+    
+  
+
    
     //MÉTODO QUE NOS LISTA TODAS LOS CLIENTES DE NUESTRO SISTEMA Y LOS VISUALIZA
 
@@ -39,7 +43,9 @@ public class ClienteDao implements InterfazCli {
 
         conn = getConnection();
         stmt = conn.prepareStatement(SQL_SELECT);
+        
         rs = stmt.executeQuery();
+        
 
         while (rs.next()) {
             String Nif = rs.getString("Nif");
@@ -48,8 +54,39 @@ public class ClienteDao implements InterfazCli {
             String Telefono = rs.getString("Telefono");
             String Email = rs.getString("Email");
             Date Fecha_nac = rs.getDate("Fecha_nac");
-                                                                //INSTANCIAR OBJETO//
-            clientes.add(new Cliente(Nif, Nombre, Apellido, Telefono, Email, Fecha_nac));
+            String Clave = rs.getString("Clave");
+            //INSTANCIAR OBJETO//
+            clientes.add(new Cliente(Nif, Nombre, Apellido, Telefono, Email, Fecha_nac, Clave));
+        }
+        close(rs);
+        close(stmt);
+        close(conn);
+
+        return clientes;
+    }
+    public List<Cliente> seleccionardesencriptar() throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Cliente cliente = null;
+        List<Cliente> clientes = new ArrayList<>();
+
+        conn = getConnection();
+        stmt = conn.prepareStatement(SQL_DECRYPT);
+        
+        rs = stmt.executeQuery();
+        
+
+        while (rs.next()) {
+            String Nif = rs.getString("Nif");
+            String Nombre = rs.getString("Nombre");
+            String Apellido = rs.getString("Apellido");
+            String Telefono = rs.getString("Telefono");
+            String Email = rs.getString("Email");
+            Date Fecha_nac = rs.getDate("Fecha_nac");
+            String Clave = rs.getString("Clave");
+            //INSTANCIAR OBJETO//
+            clientes.add(new Cliente(Nif, Nombre, Apellido, Telefono, Email, Fecha_nac, Clave));
         }
         close(rs);
         close(stmt);
@@ -76,7 +113,7 @@ public class ClienteDao implements InterfazCli {
             stmt.setString(4, cliente.getTelefono());
             stmt.setString(5, cliente.getEmail());
             stmt.setDate(6, (java.sql.Date) cliente.getFecha_nac());
-
+            stmt.setString(7, cliente.getClave());
             //Ejecuto la query
             registros = stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -107,7 +144,8 @@ public class ClienteDao implements InterfazCli {
             stmt.setString(3, cliente.getTelefono());
             stmt.setString(4, cliente.getEmail());
             stmt.setDate(5,  cliente.getFecha_nac());
-            stmt.setString(6, cliente.getNif());
+            stmt.setString(6,  cliente.getClave());
+            stmt.setString(7, cliente.getNif());
 
             registros = stmt.executeUpdate();
         } catch (SQLException ex) {

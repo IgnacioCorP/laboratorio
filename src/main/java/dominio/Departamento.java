@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 package dominio;
-
+import java.io.Serializable;
 /**
  *
  * @author Alumno Mañana
  */
-public class Departamento {
+public class Departamento implements Serializable{
     private int ID_dep;
     private String Nombre;
     private String Descripcion;

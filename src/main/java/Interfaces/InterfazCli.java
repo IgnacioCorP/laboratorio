@@ -14,7 +14,7 @@ import java.util.List;
  * @author Alumno Mañana
  */
 public interface InterfazCli {
-     public List<Cliente> seleccionar() throws SQLException;
+    public List<Cliente> seleccionar() throws SQLException;
     public int insert(Cliente object);     
     public int actualizar(Cliente object);     
     public int eliminar(Cliente object);    

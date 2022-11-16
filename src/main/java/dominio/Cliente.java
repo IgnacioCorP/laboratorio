@@ -1,34 +1,45 @@
-                                /* ENTIDAD CLIENTE - COMPRA PRODUCTOS */
-
-
+/* ENTIDAD CLIENTE - COMPRA PRODUCTOS */
 package dominio;
 
+import datos.ClienteDao;
 import java.sql.Date;
 import java.util.Objects;
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
  * @author Nicolas Correa
  */
-public class Cliente {
+public class Cliente implements Serializable {
+
     private String Nif;
     private String Nombre;
     private String Apellido;
     private String Telefono;
     private String Email;
     private Date Fecha_nac;
+    private String Clave;
 
     public Cliente() {
     }
 
-    public Cliente(String Nif, String Nombre, String Apellido, String Telefono, String Email, Date Fecha_nac) {
+    public Cliente(String Nif, String Nombre, String Apellido, String Telefono, String Email, Date Fecha_nac, String Clave) {
         this.Nif = Nif;
         this.Nombre = Nombre;
         this.Apellido = Apellido;
         this.Telefono = Telefono;
         this.Email = Email;
         this.Fecha_nac = Fecha_nac;
+        this.Clave = Clave;
     }
+
+    public Cliente(String Nif, String Clave) {
+        this.Nif = Nif;
+        this.Clave = Clave;
+    }
+    
 
     public String getNif() {
         return Nif;
@@ -78,6 +89,14 @@ public class Cliente {
         this.Fecha_nac = Fecha_nac;
     }
 
+    public String getClave() {
+        return Clave;
+    }
+
+    public void setClave(String Clave) {
+        this.Clave = Clave;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -105,10 +124,32 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "%Cliente: " + "Nif: " + Nif + ", Nombre: " + Nombre + ", Apellido: " + Apellido + ", Telefono: " + Telefono + ", Email: " + Email + ", Fecha_nac: " + Fecha_nac;
+        return "%" + Nif + "/" + Nombre + "/" + Apellido + "/" + Telefono + "/" + Email + "/" + Fecha_nac + "/" + Clave;
     }
-    
-    
-    
-    
+
+    public static List<Cliente> listarClientes() {
+        ClienteDao clienteDao = new ClienteDao();
+        List<Cliente> usuarios = null;
+        
+        try {
+            usuarios = clienteDao.seleccionar();
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return usuarios;
+    }
+    public static List<Cliente> listarClientesDec() {
+        ClienteDao clienteDao = new ClienteDao();
+        List<Cliente> usuarios = null;
+        
+        try {
+            usuarios = clienteDao.seleccionardesencriptar();
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return usuarios;
+    }
+
 }

@@ -7,12 +7,12 @@ package dominio;
 
 import java.sql.Date;
 import java.util.Objects;
-
+import java.io.Serializable;
 /**
  *
  * @author Alumno Mañana
  */
-public class Empleado {
+public class Empleado implements Serializable{
     private String Nif;
     private String Nombre;
     private String Apellido;

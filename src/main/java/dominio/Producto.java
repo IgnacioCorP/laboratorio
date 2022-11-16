@@ -6,12 +6,12 @@
 package dominio;
 
 import java.sql.Date;
-
+import java.io.Serializable;
 /**
  *
  * @author Alumno Mañana
  */
-public class Producto {
+public class Producto implements Serializable{
      private int ID_pro;
      private String Nombre;
      private double Precio;
