@@ -16,9 +16,10 @@ import java.util.List;
 
 public class EmpleadoDao implements InterfazEmp {
      private static final String SQL_SELECT = "SELECT * FROM empleado";
-    private static final String SQL_INSERT = "INSERT into empleado(Nif,Nombre,Apellido,Telefono,Direccion,Email,Fecha_nac) VALUES(?,?,?,?,?,?,?)";
-    private static final String SQL_UPDATE = "UPDATE cliente SET Nombre = ?, Apellido = ?, Telefono = ?, Direccion = ?, Email = ?, Fecha_Nac = ?   where Nif = ?";
+    private static final String SQL_INSERT = "INSERT into empleado(Nif,Nombre,Apellido,Telefono,Direccion,Email,Fecha_nac, Clave) VALUES(?,?,?,?,?,?,?,AES_ENCRYPT(?,'key'))";
+    private static final String SQL_UPDATE = "UPDATE empleado SET Nombre = ?, Apellido = ?, Telefono = ?, Direccion = ?, Email = ?, Fecha_Nac = ?  Calve = AES_ENCRYPT(?,'key') where Nif = ?";
     private static final String SQL_DELETE = "DELETE FROM empleado where Nif = ?";
+    private static final String SQL_DECRYPT = "SELECT Nif, Nombre, Apellido,Telefono,Direccion,Email,Fecha_Nac,CAST(AES_DECRYPT(Clave,'key')AS CHAR)AS Clave FROM empleado";
    
     //MÉTODO QUE NOS LISTA TODAS LOS CLIENTES DE NUESTRO SISTEMA Y LOS VISUALIZA
 
@@ -27,7 +28,7 @@ public class EmpleadoDao implements InterfazEmp {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         Empleado empleado = null;
-        List<Empleado> clientes = new ArrayList<>();
+        List<Empleado> empleados = new ArrayList<>();
 
         conn = getConnection();
         stmt = conn.prepareStatement(SQL_SELECT);
@@ -41,8 +42,40 @@ public class EmpleadoDao implements InterfazEmp {
             String Direccion = rs.getString("Direccion");
             String Email = rs.getString("Email");
             Date Fecha_Nac = rs.getDate("Fecha_Nac");
-                                                                //INSTANCIAR OBJETO//
-            clientes.add(new Empleado(Nif, Nombre, Apellido, Telefono, Direccion, Email, Fecha_Nac));
+            String Clave = rs.getString("Clave");                                                   //INSTANCIAR OBJETO//
+            
+            empleados.add(new Empleado(Nif, Nombre, Apellido, Telefono, Direccion, Email, Fecha_Nac, Clave));
+        }
+        close(rs);
+        close(stmt);
+        close(conn);
+
+        return empleados;
+    }
+    
+     public List<Empleado> seleccionardesencriptar() throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Empleado cliente = null;
+        List<Empleado> clientes = new ArrayList<>();
+
+        conn = getConnection();
+        stmt = conn.prepareStatement(SQL_DECRYPT);
+        
+        rs = stmt.executeQuery();
+        
+
+        while (rs.next()) {
+            String Nif = rs.getString("Nif");
+            String Nombre = rs.getString("Nombre");
+            String Apellido = rs.getString("Apellido");
+            String Telefono = rs.getString("Telefono");
+            String Email = rs.getString("Email");
+            Date Fecha_nac = rs.getDate("Fecha_nac");
+            String Clave = rs.getString("Clave");
+            //INSTANCIAR OBJETO//
+            clientes.add(new Empleado(Nif, Nombre, Apellido, Telefono, Email, Fecha_nac, Clave));
         }
         close(rs);
         close(stmt);

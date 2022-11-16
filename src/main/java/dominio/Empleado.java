@@ -5,9 +5,13 @@
  */
 package dominio;
 
+import datos.ClienteDao;
+import datos.EmpleadoDao;
 import java.sql.Date;
 import java.util.Objects;
 import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.List;
 /**
  *
  * @author Alumno Mañana
@@ -20,20 +24,28 @@ public class Empleado implements Serializable{
     private String Direccion;
     private String Email;
     private Date Fecha_Nac;
+    private String Clave;
 
     public Empleado() {
     }
 
-    public Empleado(String Nombre, String Apellido, String Telefono, String Direccion, String Email, Date Fecha_Nac) {
+    public Empleado(String Nombre, String Apellido, String Telefono, String Direccion, String Email, Date Fecha_Nac, String Clave) {
         this.Nombre = Nombre;
         this.Apellido = Apellido;
         this.Telefono = Telefono;
         this.Direccion = Direccion;
         this.Email = Email;
         this.Fecha_Nac = Fecha_Nac;
+        this.Clave = Clave;
     }
 
-    public Empleado(String Nif, String Nombre, String Apellido, String Telefono, String Direccion, String Email, Date Fecha_Nac) {
+    public Empleado(String Nif, String Clave) {
+        this.Nif = Nif;
+        this.Clave = Clave;
+    }
+    
+
+    public Empleado(String Nif, String Nombre, String Apellido, String Telefono, String Direccion, String Email, Date Fecha_Nac, String Clave) {
         this.Nif = Nif;
         this.Nombre = Nombre;
         this.Apellido = Apellido;
@@ -128,12 +140,33 @@ public class Empleado implements Serializable{
         return true;
     }
 
+    public String getClave() {
+        return Clave;
+    }
+
+    public void setClave(String Clave) {
+        this.Clave = Clave;
+    }
+
     @Override
     public String toString() {
-        return "%Empleado: " + "Nif: " + Nif + ", Nombre: " + Nombre + ", Apellido: " + Apellido + ", Telefono: " + Telefono + ", Direccion: " + Direccion + ", Email: " + Email + ", Fecha_Nac: " + Fecha_Nac;
+        return "%" + Nif + "/" + Nombre + "/" + Apellido + "/" + Telefono + "/" + Direccion + "/" + Email + "/" + Fecha_Nac + "/" + Clave;
     }
+
+   
      
-    
+     public static List<Empleado> listarClientesDec() {
+        EmpleadoDao empleadoDao = new EmpleadoDao();
+        List<Empleado> usuarios = null;
+        
+        try {
+            usuarios = empleadoDao.seleccionardesencriptar();
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return usuarios;
+    }
     
     
 }

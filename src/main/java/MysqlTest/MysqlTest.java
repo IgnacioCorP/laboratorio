@@ -116,8 +116,8 @@ public class MysqlTest {
         int opc = -1;
         while (opc != 0) {
             System.out.println("=====================INGRESAR COMO=====================");
-            System.out.println("1) INICIAR SESIÓN COMO ADMINISTRADOR");
-            System.out.println("2) INICIAR SESIÓN COMO USUARIO");
+            System.out.println("1) INICIAR SESIÓN COMO ADMINISTRADOR (EMPLEADO)");
+            System.out.println("2) INICIAR SESIÓN COMO CLIENTE");
             System.out.println("3) REGISTRAR NUEVO USUARIO");
             System.out.println("0) SALIR DE LA APLICACIÓN");
             System.out.println("SELECCIONE LA OPCIÓN QUE DESEE: ");
@@ -220,14 +220,16 @@ public class MysqlTest {
                     ManejoDeArchivos.agregarArchivo(nombreArchivo, c.toString());
                     break;
                 case 2:
-                    System.out.println("¿DESEA ELIMINAR SU CUENTA?");
+                    System.out.println("¿DESEA ELIMINAR SU CUENTA Yes(Y) o Not(N)?");
                     char y = ent.nextLine().charAt(0);;   
-                    if(y == 'Y'){
+                    if(y == 'Y' || y == 'y'){
                         clienteDao.eliminar(c);
                         System.out.println("SE HA ELIMINADO CORREACTAMENTE");
-                    }else{
-                        break;
+                        System.exit(0);
+                    }else if(y == 'N' || y == 'n'){
+                        System.out.println("No se ha eliminado el usuario");
                     }
+                    
                     
                     break;
                 case 3:
@@ -250,14 +252,14 @@ public class MysqlTest {
     private static void menuActualizar(Cliente c) {
         int opc = -1;
         while (opc != 0) {
-            System.out.println("=====================MENÚ ADMINISTRADOR=====================");
-            System.out.println("1) Nif");
-            System.out.println("2) Nombre");
-            System.out.println("3) Apellido");
-            System.out.println("4) Teléfono");
-            System.out.println("5) Email");
-            System.out.println("6) Fecha de nacimiento");
-            System.out.println("7) Clave");
+            System.out.println("=====================MENÚ USUARIO=====================");
+            System.out.println("1) NIF");
+            System.out.println("2) NOMBRE");
+            System.out.println("3) APELLIDO");
+            System.out.println("4) TELÉFONO");
+            System.out.println("5) EMAIL");
+            System.out.println("6) FECHA DE NACIMIENTO");
+            System.out.println("7) CLAVE");
             System.out.println("0) VOLVER");
             System.out.println("SELECCIONE LA OPCIÓN QUE DESEE: ");
             opc = sm.nextInt();
@@ -290,6 +292,7 @@ public class MysqlTest {
                     break;
 
                 case 4:
+                    
                     System.out.println("INTRODUZCA TELÉFONO: ");
                     Scanner Telefono = new Scanner(System.in);
                     String Telefonos = String.valueOf(Telefono.nextLine());
