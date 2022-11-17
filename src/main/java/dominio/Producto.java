@@ -5,8 +5,12 @@
  */
 package dominio;
 
+import datos.ClienteDao;
+import datos.ProductoDao;
 import java.sql.Date;
 import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.List;
 /**
  *
  * @author Alumno Mañana
@@ -23,6 +27,11 @@ public class Producto implements Serializable{
         this.ID_pro = ContProd;
     }
 
+    public Producto(int ID_pro) {
+        this.ID_pro = ID_pro;
+    }
+
+     
     public Producto(String Nombre, double Precio, Date Fecha_caducidad) {
         
         this.Nombre = Nombre;
@@ -105,9 +114,21 @@ public class Producto implements Serializable{
 
     @Override
     public String toString() {
-        return "%Producto" + "ID: " + ID_pro + ", Nombre: " + Nombre + ", Precio: " + Precio + ", Fecha_caducidad: " + Fecha_caducidad;
+        return "%" + "/" + ID_pro + "/" + Nombre + "/" + Precio + "/" + Fecha_caducidad;
     }
-     
+    
+     public static List<Producto> listarProductosDec() {
+        ProductoDao productoDao = new ProductoDao();
+        List<Producto> productos = null;
+        
+        try {
+            productos = productoDao.seleccionar();
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return productos;
+    }
      
      
 }

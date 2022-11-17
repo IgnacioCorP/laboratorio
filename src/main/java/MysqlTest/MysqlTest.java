@@ -1,6 +1,11 @@
 /*EJECUCIÓN DE MÉTODOS*/
 package MysqlTest;
 
+import Interfaces.InterfazCli;
+import Interfaces.InterfazDep;
+import Interfaces.InterfazEmp;
+import Interfaces.InterfazLab;
+import Interfaces.InterfazPro;
 import ManejoArchivos.ManejoDeArchivos;
 import datos.ClienteDao;
 import datos.DepartamentoDao;
@@ -36,20 +41,25 @@ public class MysqlTest {
     static ArrayList<Empleado> Col3 = new ArrayList<Empleado>();
     static ArrayList<Laboratorio> Lab = new ArrayList<Laboratorio>();
     static ArrayList<Departamento> Dep = new ArrayList<Departamento>();
-    static ClienteDao clienteDao = new ClienteDao();
-    static EmpleadoDao empleadoDao = new EmpleadoDao();
-    static ProductoDao productoDao = new ProductoDao();
+    static InterfazCli clienteDao = new ClienteDao();
+    static InterfazEmp empleadoDao = new EmpleadoDao();
+    static InterfazPro productoDao = new ProductoDao();
+    static InterfazDep departamentoDao = new DepartamentoDao();
+    static InterfazLab laboratorioDao = new LaboratorioDao();
     static Cliente CC = new Cliente();
+    static Laboratorio LL = new Laboratorio();
+    static Departamento DD = new Departamento();
+    static Producto pp = new Producto();
     static Empleado EE = new Empleado();
 
     public static Scanner ent = new Scanner(System.in);
     static String nombreArchivo = "CLIENTES.txt";
     static String nombreArchivo2 = "EMPLEADOS.txt";
     static String nombreArchivo3 = "PRODUCTOS.txt";
+    static String nombreArchivo4 = "DEPARTAMENTOS.txt";
+    static String nombreArchivo5 = "LABORATORIOS.txt";
 
     public static void main(String[] args) {
-
-        //ManejoDeArchivos.crearArchivo(nombreArchivo);
         menuPrincipal();
     }
 
@@ -522,10 +532,10 @@ public class MysqlTest {
                       try {
                     List<Empleado> emp = empleadoDao.seleccionar();
                     System.out.println("persona = " + emp);
-                    } catch (SQLException ex) {
-                        ex.printStackTrace(System.out);
-                    }
-                    break;
+                } catch (SQLException ex) {
+                    ex.printStackTrace(System.out);
+                }
+                break;
                 case 2:
                      try {
                     List<Cliente> cl = clienteDao.seleccionar();
@@ -536,28 +546,16 @@ public class MysqlTest {
                 } catch (SQLException ex) {
                     ex.printStackTrace(System.out);
                 }
-                    
-                    break;
+
+                break;
 
                 case 3:
-                    //===================================TABLA PRODUCTOS========================================================//
-                    /* ProductoDao productoDao = new ProductoDao();
-                    //LISTAR OBJETOS Y CREAR ARCHIVO
-                    //productoDao.insert(p2);
-                    //productoDao.eliminar(p1);
-                    //productoDao.actualizar(p1);
-                    Col2.add(p1);
-                    Col2.add(p2);*/
-                    Date date2 = new Date(2032 - 1900, 9, 12);
-                    Producto p1 = new Producto(1, "Up-600", 70, date2);
-                    Producto p2 = new Producto(2, "Artiflex", 90, date2);
-                    //ManejoDeArchivos.crearArchivo(nombreArchivo3);
-                    //ENVIO PARAMETROS DEL NOMBRE DEL ARCHIVO, EL TOSTRING DEL OBJETO Y TEXTO QUE SE VISUALIZARA EN EL ARCHIVO      
-                    ManejoDeArchivos.agregarArchivo(nombreArchivo3, p2.toString());
-                    ManejoDeArchivos.leerArchivo(nombreArchivo3);
+                    menuCrud("PRODUCTOS");
+
                     break;
 
                 case 4:
+                    menuCrud("LABORATORIOS");
                     //===================================TABLA LABORATORIO========================================================//
                     /*LaboratorioDao laboratorioDao = new LaboratorioDao();
                     Laboratorio L1 = new Laboratorio(1, "Kuantum Pharma", "Kra 76", "607873151");
@@ -574,6 +572,7 @@ public class MysqlTest {
                     break;
 
                 case 5:
+                    menuCrud("DEPARTAMENTOS");
                     //===================================TABLA DEPARTAMENTO========================================================//  
                     /*DepartamentoDao departamentoDao = new DepartamentoDao();
                     Departamento D1 = new Departamento(1, "Administración", "Gestión administrativa del laboratorio");
@@ -598,12 +597,293 @@ public class MysqlTest {
                     //se sale del programa
                     break;
                 default:
-                    System.out.println("Elija una opción valida");
+                    System.out.println("ELIJA UNA OPCIÓN VÁLIDA");
 
             }
-            for (int i = 0; i < 3; i++) {
-                System.out.println();
+
+        }
+    }
+
+    private static void menuCrud(String entidad) {
+        int opc = -1;
+        while (opc != 0) {
+            System.out.println("=======================MENÚ=========================");
+            System.out.println("=====================BIENVENIDO=====================");
+            System.out.println("1) INSERTAR " + entidad);
+            System.out.println("2) ACTUALIZAR " + entidad);
+            System.out.println("3) ELIMINAR " + entidad);
+            System.out.println("4) VISUALIZAR " + entidad);
+            System.out.println("0) VOLVER");
+            System.out.println("SELECCIONE LA OPCIÓN QUE DESEE: ");
+            opc = sm.nextInt();
+            System.out.println("====================================================");
+
+            switch (entidad) {
+
+                case "PRODUCTOS":
+                    switch (opc) {
+                        case 1:
+
+                            System.out.println("INTRODUZCA NOMBRE DEL PRODUCTO: ");
+                            Scanner NOM = new Scanner(System.in);
+                            String NOMS = String.valueOf(NOM.nextLine());
+                            pp.setNombre(NOMS);
+
+                            System.out.println("INTRODUZCA PRECIO DEL PRODUCTO: ");
+                            Scanner PRE = new Scanner(System.in);
+                            double pres = Double.valueOf(PRE.nextLine());
+                            pp.setPrecio(pres);
+
+                            System.out.println("INTRODUZCA LA FECHA DE CADUCIDAD DEL PRODUCTO (AÑO-MES-DÍA): ");
+                            Scanner Fechs = new Scanner(System.in);
+                            Date fecs = Date.valueOf(Fechs.nextLine());
+                            pp.setFecha_caducidad(fecs);
+
+                            System.out.println("=============PRODUCTO AÑADIDO CORRECTAMENTE=========================");
+
+                            productoDao.insert(pp);
+                            ManejoDeArchivos.agregarArchivo(nombreArchivo3, pp.toString());
+                            ManejoDeArchivos.leerArchivo(nombreArchivo3);
+                            break;
+                        case 2:
+                            System.out.println("INTRODUZCA ID DE PRODUCTO: ");
+                            int idd = ent.nextInt();
+                            for (int i = 0; i < Producto.listarProductosDec().size(); i++) {
+                                if (idd == Producto.listarProductosDec().get(i).getID_pro()) {
+                                    pp = Producto.listarProductosDec().get(i);
+
+                                    System.out.println("INTRODUZCA NOMBRE DEL PRODUCTO: ");
+                                    Scanner NOMs = new Scanner(System.in);
+                                    NOMS = String.valueOf(NOMs.nextLine());
+                                    pp.setNombre(NOMS);
+
+                                    System.out.println("INTRODUZCA PRECIO DEL PRODUCTO: ");
+                                    Scanner PREs = new Scanner(System.in);
+                                    pres = Double.valueOf(PREs.nextLine());
+                                    pp.setPrecio(pres);
+
+                                    System.out.println("INTRODUZCA LA FECHA DE CADUCIDAD DEL PRODUCTO (AÑO-MES-DÍA): ");
+                                    Scanner Fechss = new Scanner(System.in);
+                                    Date fecss = Date.valueOf(Fechss.nextLine());
+                                    pp.setFecha_caducidad(fecss);
+
+                                    productoDao.actualizar(pp);
+                                    ManejoDeArchivos.escribirArchivo(nombreArchivo3, pp.toString());
+
+                                }
+                            }
+
+                            break;
+                        case 3:
+                            System.out.println("INTRODUZCA ID DE PRODUCTO: ");
+                            int iidd = ent.nextInt();
+                            for (int i = 0; i < Producto.listarProductosDec().size(); i++) {
+                                if (iidd == Producto.listarProductosDec().get(i).getID_pro()) {
+                                    pp = Producto.listarProductosDec().get(i);
+                                    System.out.println("¿DESEA ELIMINAR ESTE PRODUCTO Yes(0) o Not(1)?");
+                                    int y;
+                                    y = ent.nextInt();
+                                    if (y == 0) {
+                                        pp = Producto.listarProductosDec().get(i);
+                                        productoDao.eliminar(pp);
+                                        System.out.println("SE HA ELIMINADO CORREACTAMENTE");
+                                        System.exit(0);
+                                    } else if (y == 1) {
+                                        System.out.println("No se ha eliminado el producto");
+                                    }
+                                }
+                            }
+                            break;
+                        case 4:
+                             try {
+                            List<Producto> productos = productoDao.seleccionar();
+                            productos.forEach(producto -> {
+                                System.out.println("producto = " + producto);
+                            }
+                            );
+                        } catch (SQLException ex) {
+                            ex.printStackTrace(System.out);
+                        }
+                        break;
+                        case 0:
+                            break;
+                        default:
+                            System.out.println("Elija una opción valida");
+                    }
+                    break;
+                case "DEPARTAMENTOS":
+                    switch (opc) {
+                        case 1:
+                            System.out.println("INTRODUZCA NOMBRE DEL DEPARTAMENTO: ");
+                            Scanner NOM = new Scanner(System.in);
+                            String NOMS = String.valueOf(NOM.nextLine());
+                            DD.setNombre(NOMS);
+
+                            System.out.println("INTRODUZCA DESCRIPCIÓN DEL DEPARTAMENTO: ");
+                            Scanner Des = new Scanner(System.in);
+                            String DESC = String.valueOf(Des.nextLine());
+                            DD.setDescripcion(DESC);
+
+                            System.out.println("=============DEPARTAMENTO AÑADIDO CORRECTAMENTE=========================");
+
+                            departamentoDao.insert(DD);
+                            ManejoDeArchivos.escribirArchivo(nombreArchivo4, DD.toString());
+                            break;
+                        case 2:
+                            System.out.println("INTRODUZCA ID DE DEPARTAMENTO: ");
+                            int idd = ent.nextInt();
+                            for (int i = 0; i < Departamento.listarDepartamentosDec().size(); i++) {
+                                if (idd == Departamento.listarDepartamentosDec().get(i).getID_dep()) {
+                                    DD = Departamento.listarDepartamentosDec().get(i);
+
+                                    System.out.println("INTRODUZCA NOMBRE DEL DEPARTAMENTO: ");
+                                    Scanner NOMs = new Scanner(System.in);
+                                    NOMS = String.valueOf(NOMs.nextLine());
+                                    DD.setNombre(NOMS);
+
+                                    System.out.println("INTRODUZCA DESCRIPCIÓN DEL DEPARTAMENTO: ");
+                                    Scanner DesS = new Scanner(System.in);
+                                    String DESCS = String.valueOf(DesS.nextLine());
+                                    DD.setDescripcion(DESCS);
+
+                                    departamentoDao.actualizar(DD);
+                                    ManejoDeArchivos.escribirArchivo(nombreArchivo4, DD.toString());
+
+                                }
+                            }
+                            break;
+                        case 3:
+                            System.out.println("INTRODUZCA ID DE DEPARTAMENTO: ");
+                            int iiidd = ent.nextInt();
+                            for (int i = 0; i < Departamento.listarDepartamentosDec().size(); i++) {
+                                if (iiidd == Departamento.listarDepartamentosDec().get(i).getID_dep()) {
+                                    DD = Departamento.listarDepartamentosDec().get(i);
+
+                                    char y = 'Y';
+
+                                    if (y == 'Y' || y == 'y') {
+                                        pp = Producto.listarProductosDec().get(i);
+                                        departamentoDao.eliminar(DD);
+                                        ManejoDeArchivos.escribirArchivo(nombreArchivo4, DD.toString());
+                                        System.out.println("SE HA ELIMINADO CORREACTAMENTE");
+                                        System.exit(0);
+                                    } else if (y == 'n' || y == 'N') {
+                                        System.out.println("No se ha eliminado el departamento");
+                                    }
+                                }
+                            }
+                            break;
+                        case 4:
+                              try {
+                            List<Departamento> departamentos = departamentoDao.seleccionar();
+                            departamentos.forEach(Departamento -> {
+                                System.out.println("Departamento = " + Departamento);
+                            }
+                            );
+                        } catch (SQLException ex) {
+                            ex.printStackTrace(System.out);
+                        }
+                        break;
+                        case 0:
+                            break;
+                        default:
+                            System.out.println("Elija una opción valida");
+                    }
+
+                    break;
+                case "LABORATORIOS":
+                    switch (opc) {
+                        case 1:
+                            System.out.println("INTRODUZCA NOMBRE DEL LABORATORIO: ");
+                            Scanner LAB = new Scanner(System.in);
+                            String LABS = String.valueOf(LAB.nextLine());
+                            LL.setNombre_sede(LABS);
+
+                            System.out.println("INTRODUZCA DIRECCIÓN DEL LABORATORIO: ");
+                            Scanner DIR = new Scanner(System.in);
+                            String DIRS = String.valueOf(DIR.nextLine());
+                            LL.setDireccion(DIRS);
+
+                            System.out.println("INTRODUZCA DIRECCIÓN DEL LABORATORIO: ");
+                            Scanner TEL = new Scanner(System.in);
+                            String TELS = String.valueOf(TEL.nextLine());
+                            LL.setTelefono(TELS);
+
+                            System.out.println("=============LABORATORIO AÑADIDO CORRECTAMENTE=========================");
+
+                            laboratorioDao.insert(LL);
+                            ManejoDeArchivos.escribirArchivo(nombreArchivo5, LL.toString());
+                            break;
+                        case 2:
+                            System.out.println("INTRODUZCA ID DEL LABORATORIO: ");
+                            int idd = ent.nextInt();
+                            for (int i = 0; i < Laboratorio.listarLaboratoriosDec().size(); i++) {
+                                if (idd == Laboratorio.listarLaboratoriosDec().get(i).getID_lab()) {
+                                    LL = Laboratorio.listarLaboratoriosDec().get(i);
+
+                                    System.out.println("INTRODUZCA NOMBRE DEL LABORATORIO: ");
+                                    Scanner LABs = new Scanner(System.in);
+                                    String LABSs = String.valueOf(LABs.nextLine());
+                                    LL.setNombre_sede(LABSs);
+
+                                    System.out.println("INTRODUZCA DIRECCIÓN DEL LABORATORIO: ");
+                                    Scanner DIRr = new Scanner(System.in);
+                                    String DIRrS = String.valueOf(DIRr.nextLine());
+                                    LL.setDireccion(DIRrS);
+
+                                    System.out.println("INTRODUZCA DIRECCIÓN DEL LABORATORIO: ");
+                                    Scanner TELl = new Scanner(System.in);
+                                    String TELSl = String.valueOf(TELl.nextLine());
+                                    LL.setTelefono(TELSl);
+
+                                    laboratorioDao.actualizar(LL);
+                                    ManejoDeArchivos.escribirArchivo(nombreArchivo5, LL.toString());
+
+                                }
+                            }
+                            break;
+                        case 3:
+                            System.out.println("INTRODUZCA ID DE LABORATORIO: ");
+                            int iiidd = ent.nextInt();
+                            for (int i = 0; i < Laboratorio.listarLaboratoriosDec().size(); i++) {
+                                if (iiidd == Laboratorio.listarLaboratoriosDec().get(i).getID_lab()) {
+                                    LL = Laboratorio.listarLaboratoriosDec().get(i);
+
+                                    char y = 'Y';
+
+                                    if (y == 'Y' || y == 'y') {
+                                        LL = Laboratorio.listarLaboratoriosDec().get(i);
+                                        laboratorioDao.eliminar(LL);
+                                        ManejoDeArchivos.escribirArchivo(nombreArchivo5, LL.toString());
+                                        System.out.println("SE HA ELIMINADO CORREACTAMENTE");
+                                       
+                                    } else if (y == 'n' || y == 'N') {
+                                        System.out.println("No se ha eliminado el laboratorio");
+                                    }
+                                }
+                            }
+                            break;
+                        case 4:
+                             try {
+                            List<Laboratorio> laboratorios = laboratorioDao.seleccionar();
+                            laboratorios.forEach(Laboratorio -> {
+                                System.out.println("Laboratorio = " + Laboratorio);
+                            }
+                            );
+                        } catch (SQLException ex) {
+                            ex.printStackTrace(System.out);
+                        }
+                        break;
+
+                        case 0:
+                            break;
+                        default:
+                            System.out.println("Elija una opción valida");
+                    }
+                    break;
+
             }
+
         }
     }
 

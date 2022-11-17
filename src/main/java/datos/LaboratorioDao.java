@@ -42,7 +42,7 @@ public class LaboratorioDao implements InterfazLab{
 
         while (rs.next()) {
             int ID_lab = rs.getInt("ID_lab");
-            String Nombre = rs.getString("Nombre");
+            String Nombre = rs.getString("Nombre_sede");
             String Direccion = rs.getString("Direccion");
             String Telefono = rs.getString("Telefono");
           

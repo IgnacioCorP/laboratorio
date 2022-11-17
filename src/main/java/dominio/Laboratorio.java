@@ -4,7 +4,11 @@
  * and open the template in the editor.
  */
 package dominio;
+import datos.DepartamentoDao;
+import datos.LaboratorioDao;
 import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.List;
 /**
  *
  * @author Alumno Mañana
@@ -93,6 +97,18 @@ public class Laboratorio implements Serializable{
         return "Laboratorio{" + "ID_lab=" + ID_lab + ", Nombre_sede=" + Nombre_sede + ", Direccion=" + Direccion + ", Telefono=" + Telefono + '}';
     }
      
-     
+    public static List<Laboratorio> listarLaboratoriosDec() {
+        LaboratorioDao laboratorioDao = new LaboratorioDao();
+        List<Laboratorio> laboratorios = null;
+        
+        try {
+            laboratorios = laboratorioDao.seleccionar();
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return laboratorios;
+    }
+    
      
 }

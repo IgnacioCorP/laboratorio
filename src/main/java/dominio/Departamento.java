@@ -4,7 +4,11 @@
  * and open the template in the editor.
  */
 package dominio;
+import datos.DepartamentoDao;
+import datos.ProductoDao;
 import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.List;
 /**
  *
  * @author Alumno Mañana
@@ -13,11 +17,14 @@ public class Departamento implements Serializable{
     private int ID_dep;
     private String Nombre;
     private String Descripcion;
-
+    public int cont=0;
     public Departamento() {
+        cont = ID_dep;
+        this.ID_dep = cont++;
     }
 
     public Departamento(String Nombre, String Descripcion) {
+        this();
         this.Nombre = Nombre;
         this.Descripcion = Descripcion;
     }
@@ -79,9 +86,20 @@ public class Departamento implements Serializable{
 
     @Override
     public String toString() {
-        return "Departamento{" + "ID_dep=" + ID_dep + ", Nombre=" + Nombre + ", Descripcion=" + Descripcion + '}';
+        return "%" + ID_dep + "/" + Nombre + "/" + Descripcion;
     }
     
-    
+     public static List<Departamento> listarDepartamentosDec() {
+        DepartamentoDao departamentoDao = new DepartamentoDao();
+        List<Departamento> departamentos = null;
+        
+        try {
+            departamentos = departamentoDao.seleccionar();
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return departamentos;
+    }
     
 }

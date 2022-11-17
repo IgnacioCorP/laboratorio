@@ -1,1 +1,1 @@
-%ProductoID: 2, Nombre: Artiflex, Precio: 90.0, Fecha_caducidad: 2032-10-12
+%/1/UP-600/93.0/2030-09-09
