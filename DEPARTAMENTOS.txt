@@ -1,1 +1,0 @@
-[Departamento{ID_dep=1, Nombre=Administración, Descripcion=Gestión administrativa del laboratorio}, Departamento{ID_dep=2, Nombre=Contabilidad, Descripcion=Gestión contable del laboratorio}]

@@ -1,1 +1,0 @@
-[Laboratorio{ID_lab=1, Nombre_sede=Kuantum Pharma, Direccion=Kra 76, Telefono=607873151}]

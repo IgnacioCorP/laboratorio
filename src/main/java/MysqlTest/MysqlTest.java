@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,81 +37,20 @@ public class MysqlTest {
     static ArrayList<Laboratorio> Lab = new ArrayList<Laboratorio>();
     static ArrayList<Departamento> Dep = new ArrayList<Departamento>();
     static ClienteDao clienteDao = new ClienteDao();
+    static EmpleadoDao empleadoDao = new EmpleadoDao();
+    static ProductoDao productoDao = new ProductoDao();
     static Cliente CC = new Cliente();
+    static Empleado EE = new Empleado();
 
     public static Scanner ent = new Scanner(System.in);
     static String nombreArchivo = "CLIENTES.txt";
+    static String nombreArchivo2 = "EMPLEADOS.txt";
+    static String nombreArchivo3 = "PRODUCTOS.txt";
 
     public static void main(String[] args) {
 
         //ManejoDeArchivos.crearArchivo(nombreArchivo);
         menuPrincipal();
-
-        //===================================TABLA PRODUCTOS========================================================//
-        /*ProductoDao productoDao = new ProductoDao();
-        Date date2 = new Date(2032 - 1900, 9, 12);
-        Producto p1 = new Producto(1, "Up-600", 70, date2);
-        Producto p2 = new Producto(2, "Artiflex", 90, date2);
-        //productoDao.insert(p2);
-        //productoDao.eliminar(p1);
-        //productoDao.actualizar(p1);
-        //LISTAR OBJETOS Y CREAR ARCHIVO
-
-        Col2.add(p1);
-        Col2.add(p2);
-        String nombreArchivo2 = "PRODUCTOS.txt";
-        ManejoDeArchivos.crearArchivo(nombreArchivo2);
-        //ENVIO PARAMETROS DEL NOMBRE DEL ARCHIVO, EL TOSTRING DEL OBJETO Y TEXTO QUE SE VISUALIZARA EN EL ARCHIVO      
-        ManejoDeArchivos.escribirArchivo(nombreArchivo2, Col2);
-        ManejoDeArchivos.leerArchivo(nombreArchivo2);*/
-        //===================================TABLA EMPLEADO========================================================//
-        /* EmpleadoDao empleadoDao = new EmpleadoDao();
-        Date date3 = new Date(2002 - 1900, 07, 31);
-        Empleado E1 = new Empleado("U1234561T", "Jorge", "Torres", "105746923", "Calle Alonso Cano 13 ", "jorge@gmail.com", date3);
-        Empleado E2 = new Empleado("Q8092134T", "Camilo", "Pardo", "635989812", "Calle Rodolfo Alvarez 14", "Camilo@gmail.com", date3);
-        //clienteDao.insert(c1);
-        //clienteDao.eliminar(c1);
-        //clienteDao.actualizar(c1);
-        //LISTAR OBJETOS Y CREAR ARCHIVO
-
-        Col3.add(E1);
-        Col3.add(E2);
-        String nombreArchivo3 = "EMPLEADOS.txt";
-        ManejoDeArchivos.crearArchivo(nombreArchivo3);
-        //ENVIO PARAMETROS DEL NOMBRE DEL ARCHIVO, EL TOSTRING DEL OBJETO Y TEXTO QUE SE VISUALIZARA EN EL ARCHIVO      
-        ManejoDeArchivos.escribirArchivo(nombreArchivo3, Col3);
-        ManejoDeArchivos.leerArchivo(nombreArchivo3);*/
-        //===================================TABLA LABORATORIO========================================================//
-        /*LaboratorioDao laboratorioDao = new LaboratorioDao();
-        Laboratorio L1 = new Laboratorio(1, "Kuantum Pharma", "Kra 76", "607873151");
-        //laboratorioDao.insert(L1);
-        laboratorioDao.actualizar(L1);
-
-        //laboratorioDao.eliminar(L1);
-        Lab.add(L1);
-        String nombreArchivo4 = "LABORATORIOS.txt";
-        ManejoDeArchivos.crearArchivo(nombreArchivo4);
-        //ENVIO PARAMETROS DEL NOMBRE DEL ARCHIVO, EL TOSTRING DEL OBJETO Y TEXTO QUE SE VISUALIZARA EN EL ARCHIVO      
-        ManejoDeArchivos.escribirArchivo(nombreArchivo4, Lab);
-        ManejoDeArchivos.leerArchivo(nombreArchivo4);*/
-        //===================================TABLA DEPARTAMENTO========================================================//  
-        /*DepartamentoDao departamentoDao = new DepartamentoDao();
-        Departamento D1 = new Departamento(1, "Administración", "Gestión administrativa del laboratorio");
-        Departamento D2 = new Departamento(2, "Contabilidad", "Gestión contable del laboratorio");
-        //departamentoDao.insert(D2);
-        //departamentoDao.actualizar(D2);
-        //departamentoDao.eliminar(D1);
-
-        Dep.add(D1);
-        Dep.add(D2);
-
-        String nombreArchivo5 = "DEPARTAMENTOS.txt";
-        ManejoDeArchivos.crearArchivo(nombreArchivo5);
-        //ENVIO PARAMETROS DEL NOMBRE DEL ARCHIVO, EL TOSTRING DEL OBJETO Y TEXTO QUE SE VISUALIZARA EN EL ARCHIVO      
-        ManejoDeArchivos.escribirArchivo(nombreArchivo5, Dep);
-        ManejoDeArchivos.leerArchivo(nombreArchivo5);
-        System.out.println("");
-        System.out.println("");*/
     }
 
     private static void menuPrincipal() {
@@ -119,13 +60,29 @@ public class MysqlTest {
             System.out.println("1) INICIAR SESIÓN COMO ADMINISTRADOR (EMPLEADO)");
             System.out.println("2) INICIAR SESIÓN COMO CLIENTE");
             System.out.println("3) REGISTRAR NUEVO USUARIO");
+            System.out.println("4) REGISTRAR NUEVO EMPLEADO");
             System.out.println("0) SALIR DE LA APLICACIÓN");
             System.out.println("SELECCIONE LA OPCIÓN QUE DESEE: ");
             opc = sm.nextInt();
             switch (opc) {
 
                 case 1:
-                    menuAdmin();
+                    System.out.println("INTRODUZCA SU ID DE EMPRESA: ");
+                    String NIF = ent.nextLine();
+                    String contraseña;
+                    for (int i = 0; i < Empleado.listarEmpleadosDec().size(); i++) {
+                        if (NIF.equals(Empleado.listarEmpleadosDec().get(i).getNif())) {
+                            System.out.println("INTRODUZCA SU CONTRASEÑA: ");
+                            contraseña = ent.nextLine();
+                            while (!contraseña.equals(Empleado.listarEmpleadosDec().get(i).getClave())) {
+                                System.out.println("PORFAVOR INTRODUZCA DE NUEVO LA CONTRASEÑA: ");
+                                contraseña = ent.nextLine();
+                            }
+
+                            menuAdmin(Empleado.listarEmpleadosDec().get(i));
+
+                        }
+                    }
                     break;
                 case 2:
                     System.out.println("INTRODUZCA EL NIF CON EL QUE SE REGISTRO: ");
@@ -193,6 +150,50 @@ public class MysqlTest {
                     ManejoDeArchivos.agregarArchivo(nombreArchivo, CC.toString());
                     ManejoDeArchivos.leerArchivo(nombreArchivo);
                     break;
+                case 4:
+                    System.out.println("INTRODUZCA NIF: ");
+                    niff = ent.nextLine();
+                    EE.setNif(niff);
+
+                    System.out.println("INTRODUZCA NOMBRE: ");
+                    Nombres = String.valueOf(ent.nextLine());
+                    EE.setNombre(Nombres);
+
+                    System.out.println("INTRODUZCA APELLIDO: ");
+                    Apellidos = String.valueOf(ent.nextLine());
+                    EE.setApellido(Apellidos);
+
+                    System.out.println("INTRODUZCA TELÉFONO: ");
+                    Telefonos = String.valueOf(ent.nextLine());
+                    EE.setTelefono(Telefonos);
+
+                    System.out.println("INTRODUZCA DIRECCIÓN: ");
+                    String Direccion = String.valueOf(ent.nextLine());
+                    EE.setDireccion(Direccion);
+
+                    System.out.println("INTRODUZCA EMAIL: ");
+                    Emails = String.valueOf(ent.nextLine());
+                    EE.setEmail(Emails);
+
+                    System.out.println("INTRODUZCA FECHA DE NACIMIENTO (AÑO-MES-DÍA): ");
+                    Scanner Fechs = new Scanner(System.in);
+                    Date fecs = Date.valueOf(Fechs.nextLine());
+                    EE.setFecha_Nac(fecs);
+
+                    System.out.println("CREE SU CONTRASEÑA: ");
+                    Claves = String.valueOf(ent.nextLine());
+                    EE.setClave(Claves);
+
+                    System.out.println("=============USUARIO AÑADIDO CORRECTAMENTE=========================");
+
+                    Col3.add(EE);
+                    empleadoDao.insert(EE);
+
+                    //LISTAR OBJETOS Y CREAR ARCHIVO
+                    //ENVIO PARAMETROS DEL NOMBRE DEL ARCHIVO, EL TOSTRING DEL OBJETO Y TEXTO QUE SE VISUALIZARA EN EL ARCHIVO      
+                    ManejoDeArchivos.agregarArchivo(nombreArchivo2, EE.toString());
+                    ManejoDeArchivos.leerArchivo(nombreArchivo2);
+                    break;
                 case 0:
                     //se sale del programa
                     break;
@@ -209,6 +210,7 @@ public class MysqlTest {
             System.out.println("1) ACTUALIZAR USUARIO");
             System.out.println("2) ELIMINAR USUARIO");
             System.out.println("3) VISUALIZAR USUARIO");
+            System.out.println("4) PRODUCTOS");
             System.out.println("0) VOLVER");
             System.out.println("SELECCIONE LA OPCIÓN QUE DESEE: ");
             opc = sm.nextInt();
@@ -217,29 +219,41 @@ public class MysqlTest {
                 case 1:
                     menuActualizar(c);
                     clienteDao.actualizar(c);
-                    ManejoDeArchivos.agregarArchivo(nombreArchivo, c.toString());
+                    ManejoDeArchivos.escribirArchivo(nombreArchivo, c.toString());
                     break;
                 case 2:
                     System.out.println("¿DESEA ELIMINAR SU CUENTA Yes(Y) o Not(N)?");
-                    char y = ent.nextLine().charAt(0);;   
-                    if(y == 'Y' || y == 'y'){
+                    char y = ent.nextLine().charAt(0);
+                    ;
+                    if (y == 'Y' || y == 'y') {
                         clienteDao.eliminar(c);
+                        ManejoDeArchivos.escribirArchivo(nombreArchivo, c.toString());
                         System.out.println("SE HA ELIMINADO CORREACTAMENTE");
                         System.exit(0);
-                    }else if(y == 'N' || y == 'n'){
+                    } else if (y == 'N' || y == 'n') {
                         System.out.println("No se ha eliminado el usuario");
                     }
-                    
-                    
+
                     break;
                 case 3:
                     try {
-                    List<Cliente> usuarios = clienteDao.seleccionar();            
-                    System.out.println("persona = " + c);   
-                    } catch (SQLException ex) {
-                        ex.printStackTrace(System.out);
+                    List<Cliente> usuarios = clienteDao.seleccionar();
+                    System.out.println("persona = " + c);
+                } catch (SQLException ex) {
+                    ex.printStackTrace(System.out);
+                }
+                break;
+                case 4:
+                    try {
+                    List<Producto> productos = productoDao.seleccionar();
+                    productos.forEach(producto -> {
+                        System.out.println("producto = " + producto);
                     }
-                    break;
+                    );
+                } catch (SQLException ex) {
+                    ex.printStackTrace(System.out);
+                }
+                break;
                 case 0:
                     //se sale del programa
                     break;
@@ -292,7 +306,7 @@ public class MysqlTest {
                     break;
 
                 case 4:
-                    
+
                     System.out.println("INTRODUZCA TELÉFONO: ");
                     Scanner Telefono = new Scanner(System.in);
                     String Telefonos = String.valueOf(Telefono.nextLine());
@@ -315,7 +329,7 @@ public class MysqlTest {
 
                     break;
                 case 7:
-                    
+
                     System.out.println("CREE SU CONTRASEÑA: ");
                     Scanner Clave = new Scanner(System.in);
                     String Claves = String.valueOf(Clave.nextLine());
@@ -334,15 +348,18 @@ public class MysqlTest {
         }
     }
 
-    private static void menuAdmin() {
+    private static void menuActualizar2(Empleado e) {
         int opc = -1;
         while (opc != 0) {
-            System.out.println("=====================MENÚ ADMINISTRADOR=====================");
-            System.out.println("1) EMPLEADO");
-            System.out.println("2) CLIENTE");
-            System.out.println("3) PRODUCTO");
-            System.out.println("4) LABORATORIO");
-            System.out.println("5) DEPARTAMENTO");
+            System.out.println("=====================MENÚ USUARIO=====================");
+            System.out.println("1) NIF");
+            System.out.println("2) NOMBRE");
+            System.out.println("3) APELLIDO");
+            System.out.println("4) TELÉFONO");
+            System.out.println("5) DIRECCIÓN");
+            System.out.println("6) EMAIL");
+            System.out.println("7) FECHA DE NACIMIENTO");
+            System.out.println("8) CLAVE");
             System.out.println("0) VOLVER");
             System.out.println("SELECCIONE LA OPCIÓN QUE DESEE: ");
             opc = sm.nextInt();
@@ -351,22 +368,230 @@ public class MysqlTest {
             switch (opc) {
 
                 case 1:
+                    System.out.println("INTRODUZCA NIF: ");
+                    Scanner niF = new Scanner(System.in);
+                    String niff = niF.nextLine();
+                    e.setNif(niff);
 
                     break;
                 case 2:
+                    System.out.println("INTRODUZCA NOMBRE: ");
+                    Scanner Nombre = new Scanner(System.in);
+                    String Nombres = String.valueOf(Nombre.nextLine());
+                    e.setNombre(Nombres);
 
                     break;
 
                 case 3:
 
+                    System.out.println("INTRODUZCA APELLIDO: ");
+                    Scanner Apellido = new Scanner(System.in);
+                    String Apellidos = String.valueOf(Apellido.nextLine());
+                    e.setApellido(Apellidos);
+
                     break;
 
                 case 4:
 
+                    System.out.println("INTRODUZCA TELÉFONO: ");
+                    Scanner Telefono = new Scanner(System.in);
+                    String Telefonos = String.valueOf(Telefono.nextLine());
+                    e.setTelefono(Telefonos);
+
+                    break;
+                case 5:
+
+                    System.out.println("INTRODUZCA DIRECCIÓN: ");
+                    Scanner Direccion = new Scanner(System.in);
+                    String Direcciones = String.valueOf(Direccion.nextLine());
+                    e.setDireccion(Direcciones);
+
+                    break;
+
+                case 6:
+                    System.out.println("INTRODUZCA EMAIL: ");
+                    Scanner Email = new Scanner(System.in);
+                    String Emails = String.valueOf(Email.nextLine());
+                    e.setEmail(Emails);
+
+                    break;
+                case 7:
+
+                    System.out.println("INTRODUZCA FECHA DE NACIMIENTO (AÑO-MES-DÍA): ");
+                    Scanner Fech = new Scanner(System.in);
+                    Date fec = Date.valueOf(Fech.nextLine());
+                    e.setFecha_Nac(fec);
+
+                    break;
+                case 8:
+
+                    System.out.println("CREE SU CONTRASEÑA: ");
+                    Scanner Clave = new Scanner(System.in);
+                    String Claves = String.valueOf(Clave.nextLine());
+                    e.setClave(Claves);
+
+                    break;
+
+                case 0:
+                    //se sale del programa
+                    break;
+                default:
+                    System.out.println("Elija una opción valida");
+
+            }
+
+        }
+    }
+
+    private static void menuAdmin(Empleado e) {
+        int opc = -1;
+        while (opc != 0) {
+            System.out.println("=====================MENÚ ADMINISTRADOR=====================");
+            System.out.println("=====================BIENVENIDO=====================");
+            System.out.println("1) ACTUALIZAR CUENTA");
+            System.out.println("2) ELIMINAR CUENTA");
+            System.out.println("3) MI CUENTA");
+            System.out.println("4) TABLAS");
+            System.out.println("0) VOLVER");
+            System.out.println("SELECCIONE LA OPCIÓN QUE DESEE: ");
+            opc = sm.nextInt();
+            System.out.println("====================================================");
+
+            switch (opc) {
+
+                case 1:
+                    menuActualizar2(e);
+                    empleadoDao.actualizar(e);
+                    ManejoDeArchivos.escribirArchivo(nombreArchivo2, e.toString());
+                    break;
+                case 2:
+
+                    System.out.println("¿DESEA ELIMINAR SU CUENTA Yes(Y) o Not(N)?");
+                    char y = ent.nextLine().charAt(0);
+                    ;
+                    if (y == 'Y' || y == 'y') {
+                        empleadoDao.eliminar(e);
+                        System.out.println("SE HA ELIMINADO CORREACTAMENTE");
+                        System.exit(0);
+                    } else if (y == 'N' || y == 'n') {
+                        System.out.println("No se ha eliminado el usuario");
+                    }
+
+                    break;
+                case 3:
+                    try {
+                    List<Empleado> usuarios = empleadoDao.seleccionar();
+                    System.out.println("persona = " + e);
+                } catch (SQLException ex) {
+                    ex.printStackTrace(System.out);
+                }
+                break;
+
+                case 4:
+                    menuTablas(e);
+                    break;
+
+                case 0:
+                    //se sale del programa
+                    break;
+                default:
+                    System.out.println("Elija una opción valida");
+
+            }
+
+        }
+    }
+
+    private static void menuTablas(Empleado e) {
+        int opc = -1;
+        while (opc != 0) {
+            System.out.println("=====================MENÚ ADMINISTRADOR=====================");
+            System.out.println("1) EMPLEADOS");
+            System.out.println("2) CLIENTES");
+            System.out.println("3) PRODUCTOS");
+            System.out.println("4) LABORATORIOS");
+            System.out.println("5) DEPARTAMENTOS");
+            System.out.println("0) VOLVER");
+            System.out.println("SELECCIONE LA OPCIÓN QUE DESEE: ");
+            opc = sm.nextInt();
+            System.out.println("====================================================");
+
+            switch (opc) {
+
+                case 1:
+                      try {
+                    List<Empleado> emp = empleadoDao.seleccionar();
+                    System.out.println("persona = " + emp);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace(System.out);
+                    }
+                    break;
+                case 2:
+                     try {
+                    List<Cliente> cl = clienteDao.seleccionar();
+                    cl.forEach(cliente -> {
+                        System.out.println("Cliente = " + cliente);
+                    }
+                    );
+                } catch (SQLException ex) {
+                    ex.printStackTrace(System.out);
+                }
+                    
+                    break;
+
+                case 3:
+                    //===================================TABLA PRODUCTOS========================================================//
+                    /* ProductoDao productoDao = new ProductoDao();
+                    //LISTAR OBJETOS Y CREAR ARCHIVO
+                    //productoDao.insert(p2);
+                    //productoDao.eliminar(p1);
+                    //productoDao.actualizar(p1);
+                    Col2.add(p1);
+                    Col2.add(p2);*/
+                    Date date2 = new Date(2032 - 1900, 9, 12);
+                    Producto p1 = new Producto(1, "Up-600", 70, date2);
+                    Producto p2 = new Producto(2, "Artiflex", 90, date2);
+                    //ManejoDeArchivos.crearArchivo(nombreArchivo3);
+                    //ENVIO PARAMETROS DEL NOMBRE DEL ARCHIVO, EL TOSTRING DEL OBJETO Y TEXTO QUE SE VISUALIZARA EN EL ARCHIVO      
+                    ManejoDeArchivos.agregarArchivo(nombreArchivo3, p2.toString());
+                    ManejoDeArchivos.leerArchivo(nombreArchivo3);
+                    break;
+
+                case 4:
+                    //===================================TABLA LABORATORIO========================================================//
+                    /*LaboratorioDao laboratorioDao = new LaboratorioDao();
+                    Laboratorio L1 = new Laboratorio(1, "Kuantum Pharma", "Kra 76", "607873151");
+                    //laboratorioDao.insert(L1);
+                    laboratorioDao.actualizar(L1);
+
+                    //laboratorioDao.eliminar(L1);
+                    Lab.add(L1);
+                    String nombreArchivo4 = "LABORATORIOS.txt";
+                    ManejoDeArchivos.crearArchivo(nombreArchivo4);
+                    //ENVIO PARAMETROS DEL NOMBRE DEL ARCHIVO, EL TOSTRING DEL OBJETO Y TEXTO QUE SE VISUALIZARA EN EL ARCHIVO      
+                    ManejoDeArchivos.escribirArchivo(nombreArchivo4, Lab);
+                    ManejoDeArchivos.leerArchivo(nombreArchivo4);*/
                     break;
 
                 case 5:
+                    //===================================TABLA DEPARTAMENTO========================================================//  
+                    /*DepartamentoDao departamentoDao = new DepartamentoDao();
+                    Departamento D1 = new Departamento(1, "Administración", "Gestión administrativa del laboratorio");
+                    Departamento D2 = new Departamento(2, "Contabilidad", "Gestión contable del laboratorio");
+                    //departamentoDao.insert(D2);
+                    //departamentoDao.actualizar(D2);
+                    //departamentoDao.eliminar(D1);
 
+                    Dep.add(D1);
+                    Dep.add(D2);
+
+                    String nombreArchivo5 = "DEPARTAMENTOS.txt";
+                    ManejoDeArchivos.crearArchivo(nombreArchivo5);
+                    //ENVIO PARAMETROS DEL NOMBRE DEL ARCHIVO, EL TOSTRING DEL OBJETO Y TEXTO QUE SE VISUALIZARA EN EL ARCHIVO      
+                    ManejoDeArchivos.escribirArchivo(nombreArchivo5, Dep);
+                    ManejoDeArchivos.leerArchivo(nombreArchivo5);
+                    System.out.println("");
+                    System.out.println("");*/
                     break;
 
                 case 0:

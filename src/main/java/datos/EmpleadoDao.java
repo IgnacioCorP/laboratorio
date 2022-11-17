@@ -16,8 +16,8 @@ import java.util.List;
 
 public class EmpleadoDao implements InterfazEmp {
      private static final String SQL_SELECT = "SELECT * FROM empleado";
-    private static final String SQL_INSERT = "INSERT into empleado(Nif,Nombre,Apellido,Telefono,Direccion,Email,Fecha_nac, Clave) VALUES(?,?,?,?,?,?,?,AES_ENCRYPT(?,'key'))";
-    private static final String SQL_UPDATE = "UPDATE empleado SET Nombre = ?, Apellido = ?, Telefono = ?, Direccion = ?, Email = ?, Fecha_Nac = ?  Calve = AES_ENCRYPT(?,'key') where Nif = ?";
+    private static final String SQL_INSERT = "INSERT into empleado(Nif,Nombre,Apellido,Telefono,Direccion,Email,Fecha_Nac, Clave) VALUES(?,?,?,?,?,?,?,AES_ENCRYPT(?,'key'))";
+    private static final String SQL_UPDATE = "UPDATE empleado SET Nombre = ?, Apellido = ?, Telefono = ?, Direccion = ?, Email = ?, Fecha_Nac = ?,  Clave = AES_ENCRYPT(?,'key') where Nif = ?";
     private static final String SQL_DELETE = "DELETE FROM empleado where Nif = ?";
     private static final String SQL_DECRYPT = "SELECT Nif, Nombre, Apellido,Telefono,Direccion,Email,Fecha_Nac,CAST(AES_DECRYPT(Clave,'key')AS CHAR)AS Clave FROM empleado";
    
@@ -58,7 +58,7 @@ public class EmpleadoDao implements InterfazEmp {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         Empleado cliente = null;
-        List<Empleado> clientes = new ArrayList<>();
+        List<Empleado> empleados = new ArrayList<>();
 
         conn = getConnection();
         stmt = conn.prepareStatement(SQL_DECRYPT);
@@ -71,17 +71,18 @@ public class EmpleadoDao implements InterfazEmp {
             String Nombre = rs.getString("Nombre");
             String Apellido = rs.getString("Apellido");
             String Telefono = rs.getString("Telefono");
+            String Direccion = rs.getString("Direccion");
             String Email = rs.getString("Email");
-            Date Fecha_nac = rs.getDate("Fecha_nac");
+            Date Fecha_Nac = rs.getDate("Fecha_Nac");
             String Clave = rs.getString("Clave");
             //INSTANCIAR OBJETO//
-            clientes.add(new Empleado(Nif, Nombre, Apellido, Telefono, Email, Fecha_nac, Clave));
+            empleados.add(new Empleado(Nif, Nombre, Apellido, Telefono, Direccion, Email, Fecha_Nac, Clave));
         }
         close(rs);
         close(stmt);
         close(conn);
 
-        return clientes;
+        return empleados;
     }
 
     //MÉTODO PARA INSERTAR CLIENTES EN MI SISTEMA
@@ -103,7 +104,7 @@ public class EmpleadoDao implements InterfazEmp {
             stmt.setString(5, empleado.getDireccion());
             stmt.setString(6, empleado.getEmail());
             stmt.setDate(7, (java.sql.Date) empleado.getFecha_Nac());
-
+            stmt.setString(8, empleado.getClave());
             //Ejecuto la query
             registros = stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -135,7 +136,8 @@ public class EmpleadoDao implements InterfazEmp {
             stmt.setString(4, empleado.getDireccion());
             stmt.setString(5, empleado.getEmail());
             stmt.setDate(6,  empleado.getFecha_Nac());
-            stmt.setString(7, empleado.getNif());
+            stmt.setString(7,  empleado.getClave());
+            stmt.setString(8, empleado.getNif());
 
             registros = stmt.executeUpdate();
         } catch (SQLException ex) {

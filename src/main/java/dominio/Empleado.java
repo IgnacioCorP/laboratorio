@@ -53,6 +53,7 @@ public class Empleado implements Serializable{
         this.Direccion = Direccion;
         this.Email = Email;
         this.Fecha_Nac = Fecha_Nac;
+        this.Clave = Clave;
     }
 
     public String getNif() {
@@ -155,7 +156,7 @@ public class Empleado implements Serializable{
 
    
      
-     public static List<Empleado> listarClientesDec() {
+     public static List<Empleado> listarEmpleadosDec() {
         EmpleadoDao empleadoDao = new EmpleadoDao();
         List<Empleado> usuarios = null;
         
