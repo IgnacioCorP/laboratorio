@@ -94,7 +94,7 @@ public class Laboratorio implements Serializable{
 
     @Override
     public String toString() {
-        return "Laboratorio{" + "ID_lab=" + ID_lab + ", Nombre_sede=" + Nombre_sede + ", Direccion=" + Direccion + ", Telefono=" + Telefono + '}';
+        return "%" + ID_lab + "/" + Nombre_sede + "/" + Direccion + "/" + Telefono;
     }
      
     public static List<Laboratorio> listarLaboratoriosDec() {

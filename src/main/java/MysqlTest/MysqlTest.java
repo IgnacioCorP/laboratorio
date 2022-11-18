@@ -80,10 +80,13 @@ public class MysqlTest {
                     System.out.println("INTRODUZCA SU ID DE EMPRESA: ");
                     String NIF = ent.nextLine();
                     String contraseña;
+                    //RECORRER LISTA DE EMPLEADOS MEDIANTE UN MÉTODO QUE SE HA CREADO EN LA CLASE EMPLEADO
                     for (int i = 0; i < Empleado.listarEmpleadosDec().size(); i++) {
+                        //SI ESE EMPLEADO EXISTE, ENTRA EN LA CONDICIÓN
                         if (NIF.equals(Empleado.listarEmpleadosDec().get(i).getNif())) {
                             System.out.println("INTRODUZCA SU CONTRASEÑA: ");
                             contraseña = ent.nextLine();
+                            //MIENTRAS LA CONTRASEÑA SEA INCORRECTA, VUELVA A INTRODUCIR LA CONTRASEÑA
                             while (!contraseña.equals(Empleado.listarEmpleadosDec().get(i).getClave())) {
                                 System.out.println("PORFAVOR INTRODUZCA DE NUEVO LA CONTRASEÑA: ");
                                 contraseña = ent.nextLine();
@@ -95,13 +98,16 @@ public class MysqlTest {
                     }
                     break;
                 case 2:
+                    //RECORRER LISTA DE EMPLEADOS MEDIANTE UN MÉTODO QUE SE HA CREADO EN LA CLASE CLIENTE
                     System.out.println("INTRODUZCA EL NIF CON EL QUE SE REGISTRO: ");
                     String nif = ent.nextLine();
                     String clave;
                     for (int i = 0; i < Cliente.listarClientesDec().size(); i++) {
+                        //SI ESE CLIENTE EXISTE, ENTRA EN LA CONDICIÓN
                         if (nif.equals(Cliente.listarClientesDec().get(i).getNif())) {
                             System.out.println("INTRODUZCA SU CONTRASEÑA: ");
                             clave = ent.nextLine();
+                            //MIENTRAS LA CONTRASEÑA SEA INCORRECTA, VUELVA A INTRODUCIR LA CONTRASEÑA
                             while (!clave.equals(Cliente.listarClientesDec().get(i).getClave())) {
                                 System.out.println("PORFAVOR INTRODUZCA DE NUEVO LA CONTRASEÑA: ");
                                 clave = ent.nextLine();
@@ -114,7 +120,7 @@ public class MysqlTest {
 
                     break;
                 case 3:
-
+                    //CREAR OBJETO EMPLEADO 
                     System.out.println("INTRODUZCA NIF: ");
                     Scanner niF = new Scanner(System.in);
                     String niff = niF.nextLine();
@@ -161,8 +167,10 @@ public class MysqlTest {
                     ManejoDeArchivos.leerArchivo(nombreArchivo);
                     break;
                 case 4:
+                    //CREAR OBJETO CLIENTE 
                     System.out.println("INTRODUZCA NIF: ");
                     niff = ent.nextLine();
+                    ent.nextLine();
                     EE.setNif(niff);
 
                     System.out.println("INTRODUZCA NOMBRE: ");
@@ -205,10 +213,10 @@ public class MysqlTest {
                     ManejoDeArchivos.leerArchivo(nombreArchivo2);
                     break;
                 case 0:
-                    //se sale del programa
+                    //SALIR DEL PROGRAMA
                     break;
                 default:
-                    System.out.println("Elija una opción valida");
+                    System.out.println("ELIJA UNA OPCIÓN VÁLIDA");
             }
         }
     }
@@ -227,6 +235,7 @@ public class MysqlTest {
             switch (opc) {
 
                 case 1:
+                     //ACTUALIZA A PARTIR DEL OBJETO QUE SE LE ENVÍA POR PARAMETRO
                     menuActualizar(c);
                     clienteDao.actualizar(c);
                     ManejoDeArchivos.escribirArchivo(nombreArchivo, c.toString());
@@ -235,17 +244,19 @@ public class MysqlTest {
                     System.out.println("¿DESEA ELIMINAR SU CUENTA Yes(Y) o Not(N)?");
                     char y = ent.nextLine().charAt(0);
                     ;
+                    //SI LA OPCIÓN ES IGUAL AL CARACTER, CUMPLE LA FUNCIÓN ELIMINAR EL OBJETO QUE SE LE ENVÍA POR PARÁMETRO
                     if (y == 'Y' || y == 'y') {
                         clienteDao.eliminar(c);
                         ManejoDeArchivos.escribirArchivo(nombreArchivo, c.toString());
                         System.out.println("SE HA ELIMINADO CORREACTAMENTE");
-                        System.exit(0);
+
                     } else if (y == 'N' || y == 'n') {
                         System.out.println("No se ha eliminado el usuario");
                     }
 
                     break;
                 case 3:
+                    //VER LA CUENTA DEL USUARIO QUE SE LE ENVÍA POR PARÁMETRO
                     try {
                     List<Cliente> usuarios = clienteDao.seleccionar();
                     System.out.println("persona = " + c);
@@ -254,6 +265,7 @@ public class MysqlTest {
                 }
                 break;
                 case 4:
+                    //PERMITE AL CLIENTE VER LA LISTA DE PRODUCTOS.
                     try {
                     List<Producto> productos = productoDao.seleccionar();
                     productos.forEach(producto -> {
@@ -268,12 +280,13 @@ public class MysqlTest {
                     //se sale del programa
                     break;
                 default:
-                    System.out.println("Elija una opción valida");
+                    System.out.println("ELIJA UNA OPCIÓN VÁLIDA");
             }
         }
     }
 
     private static void menuActualizar(Cliente c) {
+        //ENCARGADO DE ACTUALIZAR CADA CAMPO DEL CLIENTE QUE SE LE ENVÍA COMO PARÁMETRO
         int opc = -1;
         while (opc != 0) {
             System.out.println("=====================MENÚ USUARIO=====================");
@@ -359,6 +372,7 @@ public class MysqlTest {
     }
 
     private static void menuActualizar2(Empleado e) {
+        //ENCARGADO DE ACTUALIZAR CADA CAMPO DEL EMPLEADO QUE SE LE ENVÍA COMO PARÁMETRO
         int opc = -1;
         while (opc != 0) {
             System.out.println("=====================MENÚ USUARIO=====================");
@@ -470,6 +484,7 @@ public class MysqlTest {
             switch (opc) {
 
                 case 1:
+                    //ACTUALIZA A PARTIR DEL OBJETO QUE SE LE ENVÍA POR PARAMETRO
                     menuActualizar2(e);
                     empleadoDao.actualizar(e);
                     ManejoDeArchivos.escribirArchivo(nombreArchivo2, e.toString());
@@ -479,16 +494,18 @@ public class MysqlTest {
                     System.out.println("¿DESEA ELIMINAR SU CUENTA Yes(Y) o Not(N)?");
                     char y = ent.nextLine().charAt(0);
                     ;
+                    //SI LA OPCIÓN ES IGUAL AL CARACTER, CUMPLE LA FUNCIÓN ELIMINAR EL OBJETO QUE SE LE ENVÍA POR PARÁMETRO
                     if (y == 'Y' || y == 'y') {
                         empleadoDao.eliminar(e);
                         System.out.println("SE HA ELIMINADO CORREACTAMENTE");
                         System.exit(0);
                     } else if (y == 'N' || y == 'n') {
-                        System.out.println("No se ha eliminado el usuario");
+                        System.out.println("NO SE HA ELIMINADO");
                     }
 
                     break;
                 case 3:
+                    //VER LA CUENTA DEL USUARIO QUE SE LE ENVÍA POR PARÁMETRO
                     try {
                     List<Empleado> usuarios = empleadoDao.seleccionar();
                     System.out.println("persona = " + e);
@@ -498,14 +515,15 @@ public class MysqlTest {
                 break;
 
                 case 4:
+                    //PERMITE AL ADMINISTRADOR HACER EL CRUD DE CADA UNA DE LAS TABLAS, ENVIANDOLE EL OBJETO COMO PARÁMETRO.
                     menuTablas(e);
                     break;
 
                 case 0:
-                    //se sale del programa
+                    //SALE DEL PROGRAMA
                     break;
                 default:
-                    System.out.println("Elija una opción valida");
+                    System.out.println("ELIJA UNA OPCIÓN VÁLIDA");
 
             }
 
@@ -513,6 +531,7 @@ public class MysqlTest {
     }
 
     private static void menuTablas(Empleado e) {
+        //PERMITE AL EMPLEADO QUE SE LE ENVÍA COMO PARÁMETRO ADMINISTRAR ESTE MENÚ
         int opc = -1;
         while (opc != 0) {
             System.out.println("=====================MENÚ ADMINISTRADOR=====================");
@@ -529,14 +548,16 @@ public class MysqlTest {
             switch (opc) {
 
                 case 1:
+                    //VISUALIZAR LISTA DE EMPLEADOS  
                       try {
                     List<Empleado> emp = empleadoDao.seleccionar();
-                    System.out.println("persona = " + emp);
+                    System.out.println("Empleado = " + emp);
                 } catch (SQLException ex) {
                     ex.printStackTrace(System.out);
                 }
                 break;
                 case 2:
+                    //VISUALIZA LISTA DE CLIENTES
                      try {
                     List<Cliente> cl = clienteDao.seleccionar();
                     cl.forEach(cliente -> {
@@ -550,13 +571,17 @@ public class MysqlTest {
                 break;
 
                 case 3:
+                    //===================================TABLA PRODUCTOS========================================================//
+                    //GESTIONA CRUD DE LA TABLA Y SE LE ENVÍA COMO PARÁMETRO UN STRING PARA QUE ENTRE EN EL MENÚ CORRESPONDIENTE
                     menuCrud("PRODUCTOS");
 
                     break;
 
                 case 4:
-                    menuCrud("LABORATORIOS");
                     //===================================TABLA LABORATORIO========================================================//
+                    //GESTIONA CRUD DE LA TABLA Y SE LE ENVÍA COMO PARÁMETRO UN STRING PARA QUE ENTRE EN EL MENÚ CORRESPONDIENTE
+                    menuCrud("LABORATORIOS");
+
                     /*LaboratorioDao laboratorioDao = new LaboratorioDao();
                     Laboratorio L1 = new Laboratorio(1, "Kuantum Pharma", "Kra 76", "607873151");
                     //laboratorioDao.insert(L1);
@@ -572,8 +597,10 @@ public class MysqlTest {
                     break;
 
                 case 5:
+                    //===================================TABLA DEPARTAMENTO========================================================//
                     menuCrud("DEPARTAMENTOS");
-                    //===================================TABLA DEPARTAMENTO========================================================//  
+                    //GESTIONA CRUD DE LA TABLA Y SE LE ENVÍA COMO PARÁMETRO UN STRING PARA QUE ENTRE EN EL MENÚ CORRESPONDIENTE
+
                     /*DepartamentoDao departamentoDao = new DepartamentoDao();
                     Departamento D1 = new Departamento(1, "Administración", "Gestión administrativa del laboratorio");
                     Departamento D2 = new Departamento(2, "Contabilidad", "Gestión contable del laboratorio");
@@ -594,7 +621,7 @@ public class MysqlTest {
                     break;
 
                 case 0:
-                    //se sale del programa
+                    //SALE DEL MENÚ
                     break;
                 default:
                     System.out.println("ELIJA UNA OPCIÓN VÁLIDA");
@@ -619,11 +646,11 @@ public class MysqlTest {
             System.out.println("====================================================");
 
             switch (entidad) {
-
+                
                 case "PRODUCTOS":
                     switch (opc) {
                         case 1:
-
+                            //INSERTAR NUEVO OBJETO
                             System.out.println("INTRODUZCA NOMBRE DEL PRODUCTO: ");
                             Scanner NOM = new Scanner(System.in);
                             String NOMS = String.valueOf(NOM.nextLine());
@@ -646,6 +673,7 @@ public class MysqlTest {
                             ManejoDeArchivos.leerArchivo(nombreArchivo3);
                             break;
                         case 2:
+                            //ACTUALIZAR OBJETO
                             System.out.println("INTRODUZCA ID DE PRODUCTO: ");
                             int idd = ent.nextInt();
                             for (int i = 0; i < Producto.listarProductosDec().size(); i++) {
@@ -675,6 +703,7 @@ public class MysqlTest {
 
                             break;
                         case 3:
+                            //ELIMINAR OBJETO
                             System.out.println("INTRODUZCA ID DE PRODUCTO: ");
                             int iidd = ent.nextInt();
                             for (int i = 0; i < Producto.listarProductosDec().size(); i++) {
@@ -687,7 +716,7 @@ public class MysqlTest {
                                         pp = Producto.listarProductosDec().get(i);
                                         productoDao.eliminar(pp);
                                         System.out.println("SE HA ELIMINADO CORREACTAMENTE");
-                                        System.exit(0);
+
                                     } else if (y == 1) {
                                         System.out.println("No se ha eliminado el producto");
                                     }
@@ -695,6 +724,7 @@ public class MysqlTest {
                             }
                             break;
                         case 4:
+                            //VISUALIZAR OBJETO
                              try {
                             List<Producto> productos = productoDao.seleccionar();
                             productos.forEach(producto -> {
@@ -766,9 +796,9 @@ public class MysqlTest {
                                         departamentoDao.eliminar(DD);
                                         ManejoDeArchivos.escribirArchivo(nombreArchivo4, DD.toString());
                                         System.out.println("SE HA ELIMINADO CORREACTAMENTE");
-                                        System.exit(0);
+
                                     } else if (y == 'n' || y == 'N') {
-                                        System.out.println("No se ha eliminado el departamento");
+                                        System.out.println("NO SE HA ELIMINADO");
                                     }
                                 }
                             }
@@ -787,7 +817,7 @@ public class MysqlTest {
                         case 0:
                             break;
                         default:
-                            System.out.println("Elija una opción valida");
+                            System.out.println("ELIJA UNA OPCIÓN VÁLIDA");
                     }
 
                     break;
@@ -804,7 +834,7 @@ public class MysqlTest {
                             String DIRS = String.valueOf(DIR.nextLine());
                             LL.setDireccion(DIRS);
 
-                            System.out.println("INTRODUZCA DIRECCIÓN DEL LABORATORIO: ");
+                            System.out.println("INTRODUZCA TELÉFONO DEL LABORATORIO: ");
                             Scanner TEL = new Scanner(System.in);
                             String TELS = String.valueOf(TEL.nextLine());
                             LL.setTelefono(TELS);
@@ -856,9 +886,9 @@ public class MysqlTest {
                                         laboratorioDao.eliminar(LL);
                                         ManejoDeArchivos.escribirArchivo(nombreArchivo5, LL.toString());
                                         System.out.println("SE HA ELIMINADO CORREACTAMENTE");
-                                       
+
                                     } else if (y == 'n' || y == 'N') {
-                                        System.out.println("No se ha eliminado el laboratorio");
+                                        System.out.println("NO SE HA ELIMINADO");
                                     }
                                 }
                             }
@@ -878,7 +908,7 @@ public class MysqlTest {
                         case 0:
                             break;
                         default:
-                            System.out.println("Elija una opción valida");
+                            System.out.println("ELIJA UNA OPCIÓN VÁLIDA");
                     }
                     break;
 
@@ -890,5 +920,4 @@ public class MysqlTest {
     public static int alea(int li, int ls) {//función de JAVA
         return (int) ((Math.round(Math.random() * (ls - li)) + li));
     }
-
 }
