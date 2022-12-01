@@ -37,7 +37,7 @@ public class ManejoDeArchivos {
           File archivo = new File (nombre);
         try {//Se que el fichero existe
             salida = new PrintWriter(archivo);
-            salida.print(contenido);
+            salida.println(contenido);
             System.out.println("====================SE HA CREADO EL ARCHIVO=================================");        
         } catch (FileNotFoundException ex){//El fichero no existe
             ex.printStackTrace(System.out);            
@@ -52,7 +52,7 @@ public class ManejoDeArchivos {
         try {
            
             salida = new PrintWriter(new FileWriter(nombre,true));
-            salida.print(contenido);
+            salida.println(contenido);
         } catch (IOException ex) {
             
         }finally{

@@ -21,13 +21,14 @@ import java.util.List;
  * @author Alumno Mañana
  */
 public class DepartamentoDao implements InterfazDep {
+
     private static final String SQL_SELECT = "SELECT * FROM departamento";
+    private static final String SQL_SELECT2 = "SELECT * FROM departamento where Nombre like ? ";
     private static final String SQL_INSERT = "INSERT into departamento(ID_dep, Nombre, Descripcion) VALUES(?,?,?)";
     private static final String SQL_UPDATE = "UPDATE departamento SET Nombre = ?, Descripcion = ? where ID_dep = ?";
     private static final String SQL_DELETE = "DELETE FROM departamento where ID_dep = ?";
-   
-    //MÉTODO QUE NOS LISTA TODAS LOS CLIENTES DE NUESTRO SISTEMA Y LOS VISUALIZA
 
+    //MÉTODO QUE NOS LISTA TODAS LOS CLIENTES DE NUESTRO SISTEMA Y LOS VISUALIZA
     public List<Departamento> seleccionar() throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -43,11 +44,39 @@ public class DepartamentoDao implements InterfazDep {
             int ID_dep = rs.getInt("ID_dep");
             String Nombre = rs.getString("Nombre");
             String Descripcion = rs.getString("Descripcion");
-          
-           
-                                                                //INSTANCIAR OBJETO//
+
+            //INSTANCIAR OBJETO//
             departamentos.add(new Departamento(ID_dep, Nombre, Descripcion));
         }
+        close(rs);
+        close(stmt);
+        close(conn);
+
+        return departamentos;
+    }
+
+    public List<Departamento> seleccionar2(String nombre) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Departamento departamento = null;
+        List<Departamento> departamentos = new ArrayList<>();
+
+        conn = getConnection();
+        stmt = conn.prepareStatement(SQL_SELECT2);
+        stmt.setString(1, nombre);
+
+            rs = stmt.executeQuery();                                             
+        while (rs.next()) {
+            int ID_dep = rs.getInt("ID_dep");
+            String Nombre = rs.getString("Nombre");
+            String Descripcion = rs.getString("Descripcion");
+
+           //INSTANCIAR OBJETO//
+            departamentos.add(new Departamento(ID_dep, Nombre, Descripcion));
+            
+        }
+        
         close(rs);
         close(stmt);
         close(conn);
@@ -70,7 +99,6 @@ public class DepartamentoDao implements InterfazDep {
             stmt.setInt(1, departamento.getID_dep());
             stmt.setString(2, departamento.getNombre());
             stmt.setString(3, departamento.getDescripcion());
-           
 
             //Ejecuto la query
             registros = stmt.executeUpdate();
@@ -96,12 +124,10 @@ public class DepartamentoDao implements InterfazDep {
         try {
             conn = getConnection();
             stmt = conn.prepareStatement(SQL_UPDATE);
-         
-           
-            
+
             stmt.setString(1, departamento.getNombre());
             stmt.setString(2, departamento.getDescripcion());
-             stmt.setInt(3, departamento.getID_dep());
+            stmt.setInt(3, departamento.getID_dep());
 
             registros = stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -147,5 +173,4 @@ public class DepartamentoDao implements InterfazDep {
         return registros;
     }
 
-  
 }

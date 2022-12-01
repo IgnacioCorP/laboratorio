@@ -9,11 +9,13 @@ import datos.ProductoDao;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Scanner;
 /**
  *
  * @author Alumno Mañana
  */
 public class Departamento implements Serializable{
+    static Scanner sm = new Scanner(System.in);
     private int ID_dep;
     private String Nombre;
     private String Descripcion;

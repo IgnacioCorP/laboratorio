@@ -16,6 +16,7 @@ import java.util.List;
 public interface InterfazDep {
     
     public List<Departamento> seleccionar() throws SQLException;
+    public List<Departamento> seleccionar2(String nombre) throws SQLException;
     public int insert(Departamento object);     
     public int actualizar(Departamento object);     
     public int eliminar(Departamento object);     

@@ -16,6 +16,7 @@ import java.util.List;
 
 public class EmpleadoDao implements InterfazEmp {
      private static final String SQL_SELECT = "SELECT * FROM empleado";
+   
     private static final String SQL_INSERT = "INSERT into empleado(Nif,Nombre,Apellido,Telefono,Direccion,Email,Fecha_Nac, Clave) VALUES(?,?,?,?,?,?,?,AES_ENCRYPT(?,'key'))";
     private static final String SQL_UPDATE = "UPDATE empleado SET Nombre = ?, Apellido = ?, Telefono = ?, Direccion = ?, Email = ?, Fecha_Nac = ?,  Clave = AES_ENCRYPT(?,'key') where Nif = ?";
     private static final String SQL_DELETE = "DELETE FROM empleado where Nif = ?";
@@ -52,6 +53,7 @@ public class EmpleadoDao implements InterfazEmp {
 
         return empleados;
     }
+    
     
      public List<Empleado> seleccionardesencriptar() throws SQLException {
         Connection conn = null;

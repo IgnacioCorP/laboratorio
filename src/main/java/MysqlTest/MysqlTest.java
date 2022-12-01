@@ -13,6 +13,7 @@ import datos.EmpleadoDao;
 import datos.LaboratorioDao;
 import datos.ProductoDao;
 import dominio.Cliente;
+import static dominio.Cliente.listarClientesDec;
 import dominio.Departamento;
 import dominio.Empleado;
 import dominio.Laboratorio;
@@ -30,6 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * 1
  *
  * @author Nicolas Correa
  */
@@ -77,7 +79,7 @@ public class MysqlTest {
             switch (opc) {
 
                 case 1:
-                    System.out.println("INTRODUZCA SU ID DE EMPRESA: ");
+                    System.out.println("INTRODUZCA  NIF CON EL QUE SE REGISTRO: ");
                     String NIF = ent.nextLine();
                     String contraseña;
                     //RECORRER LISTA DE EMPLEADOS MEDIANTE UN MÉTODO QUE SE HA CREADO EN LA CLASE EMPLEADO
@@ -98,22 +100,21 @@ public class MysqlTest {
                     }
                     break;
                 case 2:
-                    //RECORRER LISTA DE EMPLEADOS MEDIANTE UN MÉTODO QUE SE HA CREADO EN LA CLASE CLIENTE
-                    System.out.println("INTRODUZCA EL NIF CON EL QUE SE REGISTRO: ");
+                    System.out.println("INTRODUZCA  NIF CON EL QUE SE REGISTRO: ");
                     String nif = ent.nextLine();
                     String clave;
-                    for (int i = 0; i < Cliente.listarClientesDec().size(); i++) {
+                    //Cliente cliente = null;
+                    for (int i = 0; i < listarClientesDec().size(); i++) {
                         //SI ESE CLIENTE EXISTE, ENTRA EN LA CONDICIÓN
-                        if (nif.equals(Cliente.listarClientesDec().get(i).getNif())) {
+                        if (nif.equals(listarClientesDec().get(i).getNif())) {
                             System.out.println("INTRODUZCA SU CONTRASEÑA: ");
                             clave = ent.nextLine();
                             //MIENTRAS LA CONTRASEÑA SEA INCORRECTA, VUELVA A INTRODUCIR LA CONTRASEÑA
-                            while (!clave.equals(Cliente.listarClientesDec().get(i).getClave())) {
+                            while (!clave.equals(listarClientesDec().get(i).getClave())) {
                                 System.out.println("PORFAVOR INTRODUZCA DE NUEVO LA CONTRASEÑA: ");
                                 clave = ent.nextLine();
                             }
-
-                            menuUsuario(Cliente.listarClientesDec().get(i));
+                            menuUsuario(listarClientesDec().get(i));
 
                         }
                     }
@@ -121,6 +122,7 @@ public class MysqlTest {
                     break;
                 case 3:
                     //CREAR OBJETO EMPLEADO 
+
                     System.out.println("INTRODUZCA NIF: ");
                     Scanner niF = new Scanner(System.in);
                     String niff = niF.nextLine();
@@ -221,7 +223,7 @@ public class MysqlTest {
         }
     }
 
-    private static void menuUsuario(Cliente c) {
+    public static void menuUsuario(Cliente c) {
         int opc = -1;
         while (opc != 0) {
             System.out.println("=====================BIENVENIDO=====================");
@@ -235,7 +237,7 @@ public class MysqlTest {
             switch (opc) {
 
                 case 1:
-                     //ACTUALIZA A PARTIR DEL OBJETO QUE SE LE ENVÍA POR PARAMETRO
+                    //ACTUALIZA A PARTIR DEL OBJETO QUE SE LE ENVÍA POR PARAMETRO
                     menuActualizar(c);
                     clienteDao.actualizar(c);
                     ManejoDeArchivos.escribirArchivo(nombreArchivo, c.toString());
@@ -475,7 +477,7 @@ public class MysqlTest {
             System.out.println("1) ACTUALIZAR CUENTA");
             System.out.println("2) ELIMINAR CUENTA");
             System.out.println("3) MI CUENTA");
-            System.out.println("4) TABLAS");
+            System.out.println("4) ENTIDADES");
             System.out.println("0) VOLVER");
             System.out.println("SELECCIONE LA OPCIÓN QUE DESEE: ");
             opc = sm.nextInt();
@@ -549,7 +551,7 @@ public class MysqlTest {
 
                 case 1:
                     //VISUALIZAR LISTA DE EMPLEADOS  
-                      try {
+                try {
                     List<Empleado> emp = empleadoDao.seleccionar();
                     System.out.println("Empleado = " + emp);
                 } catch (SQLException ex) {
@@ -640,13 +642,14 @@ public class MysqlTest {
             System.out.println("2) ACTUALIZAR " + entidad);
             System.out.println("3) ELIMINAR " + entidad);
             System.out.println("4) VISUALIZAR " + entidad);
+            System.out.println("5) BUSCAR ");
             System.out.println("0) VOLVER");
             System.out.println("SELECCIONE LA OPCIÓN QUE DESEE: ");
             opc = sm.nextInt();
             System.out.println("====================================================");
 
             switch (entidad) {
-                
+
                 case "PRODUCTOS":
                     switch (opc) {
                         case 1:
@@ -814,6 +817,20 @@ public class MysqlTest {
                             ex.printStackTrace(System.out);
                         }
                         break;
+                        case 5:
+                            System.out.println("INTRODUZCA  EL NOMBRE A BUSCAR: ");
+                            String NOMBRE = ent.nextLine();
+                            try {
+                                List<Departamento> departamentos = departamentoDao.seleccionar2(NOMBRE);
+                                departamentos.forEach(Departamento -> {
+                                    System.out.println("Departamento = " + Departamento);
+                                }
+                                );
+                            } catch (SQLException ex) {
+                                ex.printStackTrace(System.out);
+                            }
+
+                            break;
                         case 0:
                             break;
                         default:
@@ -821,6 +838,7 @@ public class MysqlTest {
                     }
 
                     break;
+
                 case "LABORATORIOS":
                     switch (opc) {
                         case 1:

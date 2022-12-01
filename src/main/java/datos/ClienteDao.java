@@ -24,6 +24,7 @@ import java.util.List;
 public class ClienteDao implements InterfazCli {
     
     private static final String SQL_SELECT = "SELECT * FROM cliente";
+    private static final String SQL_SELECT2 = "SELECT * FROM cliente where Nombre like ?";
     private static final String SQL_INSERT = "INSERT into cliente(Nif,Nombre,Apellido,Telefono,Email,Fecha_nac,Clave) VALUES(?,?,?,?,?,?,AES_ENCRYPT(?,'key'))";
     private static final String SQL_UPDATE = "UPDATE cliente SET Nombre = ?, Apellido = ?, Telefono = ?, Email = ?, Fecha_nac = ?, Clave = AES_ENCRYPT(?,'key')  where Nif = ?";
     private static final String SQL_DELETE = "DELETE FROM cliente where Nif = ?";
@@ -55,6 +56,39 @@ public class ClienteDao implements InterfazCli {
             String Email = rs.getString("Email");
             Date Fecha_nac = rs.getDate("Fecha_nac");
             String Clave = rs.getString("Clave");
+            //INSTANCIAR OBJETO//
+            clientes.add(new Cliente(Nif, Nombre, Apellido, Telefono, Email, Fecha_nac, Clave));
+        }
+        close(rs);
+        close(stmt);
+        close(conn);
+
+        return clientes;
+    }
+    public List<Cliente> seleccionar2() throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Cliente cliente = null;
+        List<Cliente> clientes = new ArrayList<>();
+
+        conn = getConnection();
+        stmt = conn.prepareStatement(SQL_SELECT2);
+        
+        rs = stmt.executeQuery();
+        
+
+        while (rs.next()) {
+            String Nif = rs.getString("Nif");
+            String Nombre = rs.getString("Nombre");
+            String Apellido = rs.getString("Apellido");
+            String Telefono = rs.getString("Telefono");
+            String Email = rs.getString("Email");
+            Date Fecha_nac = rs.getDate("Fecha_nac");
+            String Clave = rs.getString("Clave");
+            
+            stmt.setString(1, cliente.getNombre());
+            
             //INSTANCIAR OBJETO//
             clientes.add(new Cliente(Nif, Nombre, Apellido, Telefono, Email, Fecha_nac, Clave));
         }

@@ -56,6 +56,10 @@ public class Empleado implements Serializable{
         this.Clave = Clave;
     }
 
+
+  
+    
+    
     public String getNif() {
         return Nif;
     }

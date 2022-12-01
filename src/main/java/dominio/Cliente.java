@@ -1,6 +1,8 @@
 /* ENTIDAD CLIENTE - COMPRA PRODUCTOS */
 package dominio;
 
+import Interfaces.InterfazCli;
+import static MysqlTest.MysqlTest.ent;
 import datos.ClienteDao;
 import java.sql.Date;
 import java.util.Objects;
@@ -39,7 +41,6 @@ public class Cliente implements Serializable {
         this.Nif = Nif;
         this.Clave = Clave;
     }
-    
 
     public String getNif() {
         return Nif;
@@ -127,29 +128,55 @@ public class Cliente implements Serializable {
         return "%" + Nif + "/" + Nombre + "/" + Apellido + "/" + Telefono + "/" + Email + "/" + Fecha_nac + "/" + Clave;
     }
 
-    public static List<Cliente> listarClientes() {
-        ClienteDao clienteDao = new ClienteDao();
+   
+    public List<Cliente> listarClientes() {
+         ClienteDao clienteDao = new ClienteDao();
         List<Cliente> usuarios = null;
-        
+
         try {
-            usuarios = clienteDao.seleccionar();
-            
+            clienteDao.seleccionar();
+
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
         }
         return usuarios;
     }
+
     public static List<Cliente> listarClientesDec() {
         ClienteDao clienteDao = new ClienteDao();
         List<Cliente> usuarios = null;
-        
+
         try {
             usuarios = clienteDao.seleccionardesencriptar();
-            
+
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
         }
         return usuarios;
     }
+/*
+    public static Cliente sesion() {
+        //RECORRER LISTA DE EMPLEADOS MEDIANTE UN MÉTODO QUE SE HA CREADO EN LA CLASE CLIENTE
+        System.out.println("INTRODUZCA  NIF CON EL QUE SE REGISTRO: ");
+        String nif = ent.nextLine();
+        String clave;
+        Cliente cliente = null;
+        for (int i = 0; i < listarClientesDec().size(); i++) {
+            //SI ESE CLIENTE EXISTE, ENTRA EN LA CONDICIÓN
+            if (nif.equals(listarClientesDec().get(i).getNif())) {
+                System.out.println("INTRODUZCA SU CONTRASEÑA: ");
+                clave = ent.nextLine();
+                //MIENTRAS LA CONTRASEÑA SEA INCORRECTA, VUELVA A INTRODUCIR LA CONTRASEÑA
+                while (!clave.equals(listarClientesDec().get(i).getClave())) {
+                    System.out.println("PORFAVOR INTRODUZCA DE NUEVO LA CONTRASEÑA: ");
+                    clave = ent.nextLine();
+                }
+                cliente = listarClientesDec().get(i);
+
+            }
+        }
+        return cliente;
+
+    }*/
 
 }
