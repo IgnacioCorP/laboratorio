@@ -7,13 +7,14 @@ import Interfaces.InterfazEmp;
 import Interfaces.InterfazLab;
 import Interfaces.InterfazPro;
 import ManejoArchivos.ManejoDeArchivos;
+import NegocioInterfaces.InterfazNeCli;
 import datos.ClienteDao;
 import datos.DepartamentoDao;
 import datos.EmpleadoDao;
 import datos.LaboratorioDao;
 import datos.ProductoDao;
 import dominio.Cliente;
-import static dominio.Cliente.listarClientesDec;
+//import static dominio.Cliente.listarClientesDec;
 import dominio.Departamento;
 import dominio.Empleado;
 import dominio.Laboratorio;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import negocio.ClienteNegocio;
 
 /**
  * 1
@@ -48,6 +50,7 @@ public class MysqlTest {
     static InterfazPro productoDao = new ProductoDao();
     static InterfazDep departamentoDao = new DepartamentoDao();
     static InterfazLab laboratorioDao = new LaboratorioDao();
+    static InterfazNeCli negocioCliente = new ClienteNegocio();
     static Cliente CC = new Cliente();
     static Laboratorio LL = new Laboratorio();
     static Departamento DD = new Departamento();
@@ -62,7 +65,8 @@ public class MysqlTest {
     static String nombreArchivo5 = "LABORATORIOS.txt";
 
     public static void main(String[] args) {
-        menuPrincipal();
+       
+        //menuPrincipal();
     }
 
     private static void menuPrincipal() {
@@ -104,17 +108,17 @@ public class MysqlTest {
                     String nif = ent.nextLine();
                     String clave;
                     //Cliente cliente = null;
-                    for (int i = 0; i < listarClientesDec().size(); i++) {
+                    for (int i = 0; i < negocioCliente.listarClientesDec().size(); i++) {
                         //SI ESE CLIENTE EXISTE, ENTRA EN LA CONDICIÓN
-                        if (nif.equals(listarClientesDec().get(i).getNif())) {
+                        if (nif.equals(negocioCliente.listarClientesDec().get(i).getNif())) {
                             System.out.println("INTRODUZCA SU CONTRASEÑA: ");
                             clave = ent.nextLine();
                             //MIENTRAS LA CONTRASEÑA SEA INCORRECTA, VUELVA A INTRODUCIR LA CONTRASEÑA
-                            while (!clave.equals(listarClientesDec().get(i).getClave())) {
+                            while (!clave.equals(negocioCliente.listarClientesDec().get(i).getClave())) {
                                 System.out.println("PORFAVOR INTRODUZCA DE NUEVO LA CONTRASEÑA: ");
                                 clave = ent.nextLine();
                             }
-                            menuUsuario(listarClientesDec().get(i));
+                            menuUsuario(negocioCliente.listarClientesDec().get(i));
 
                         }
                     }

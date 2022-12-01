@@ -142,7 +142,7 @@ public class Cliente implements Serializable {
         return usuarios;
     }
 
-    public static List<Cliente> listarClientesDec() {
+   /* public static List<Cliente> listarClientesDec() {
         ClienteDao clienteDao = new ClienteDao();
         List<Cliente> usuarios = null;
 
@@ -153,9 +153,9 @@ public class Cliente implements Serializable {
             ex.printStackTrace(System.out);
         }
         return usuarios;
-    }
-/*
-    public static Cliente sesion() {
+    }*/
+
+    /*public static Cliente sesion() {
         //RECORRER LISTA DE EMPLEADOS MEDIANTE UN MÉTODO QUE SE HA CREADO EN LA CLASE CLIENTE
         System.out.println("INTRODUZCA  NIF CON EL QUE SE REGISTRO: ");
         String nif = ent.nextLine();

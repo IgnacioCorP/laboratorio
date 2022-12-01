@@ -1,18 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package negocio;
 
+import static MysqlTest.MysqlTest.ent;
+import NegocioInterfaces.InterfazNeCli;
+import datos.ClienteDao;
+import dominio.Cliente;
+import java.sql.SQLException;
+import java.util.List;
 
-/**
- *
- * @author Alumno Mañana
- */
-public class ClienteNegocio {
-    // private final InterfazCli clienteDao;
 
-  
+
+public class ClienteNegocio implements InterfazNeCli {
+
+   public  List<Cliente> listarClientesDec() {
+        ClienteDao clienteDao = new ClienteDao();
+        List<Cliente> usuarios = null;
+
+        try {
+            usuarios = clienteDao.seleccionardesencriptar();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return usuarios;
+    }
      
 }

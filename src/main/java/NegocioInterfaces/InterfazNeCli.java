@@ -5,11 +5,14 @@
  */
 package NegocioInterfaces;
 
+import dominio.Cliente;
+import java.util.List;
+
 
 /**
  *
  * @author Alumno Mañana
  */
 public interface InterfazNeCli {
-    
+    public  List<Cliente> listarClientesDec();
 }
