@@ -65,12 +65,10 @@ public class MysqlTest {
 
     public static Scanner ent = new Scanner(System.in);
     static String nombreArchivo = "CLIENTES.txt";
-    static String nombreArchivo2 = "EMPLEADOS.txt";
     static String nombreArchivo3 = "PRODUCTOS.txt";
     static String nombreArchivo5 = "LABORATORIOS.txt";
 
     public static void main(String[] args) {
-        //negocioEmpleado.sesion();
         menuPrincipal();
     }
 
@@ -95,7 +93,7 @@ public class MysqlTest {
                     break;
                 case 3:
                     //CREAR OBJETO EMPLEADO 
-
+                    
                     System.out.println("INTRODUZCA NIF: ");
                     Scanner niF = new Scanner(System.in);
                     String niff = niF.nextLine();
@@ -140,49 +138,7 @@ public class MysqlTest {
                     break;
                 case 4:
                     //CREAR OBJETO CLIENTE 
-                    System.out.println("INTRODUZCA NIF: ");
-                    niff = ent.nextLine();
-                    ent.nextLine();
-                    EE.setNif(niff);
-
-                    System.out.println("INTRODUZCA NOMBRE: ");
-                    Nombres = String.valueOf(ent.nextLine());
-                    EE.setNombre(Nombres);
-
-                    System.out.println("INTRODUZCA APELLIDO: ");
-                    Apellidos = String.valueOf(ent.nextLine());
-                    EE.setApellido(Apellidos);
-
-                    System.out.println("INTRODUZCA TELÉFONO: ");
-                    Telefonos = String.valueOf(ent.nextLine());
-                    EE.setTelefono(Telefonos);
-
-                    System.out.println("INTRODUZCA DIRECCIÓN: ");
-                    String Direccion = String.valueOf(ent.nextLine());
-                    EE.setDireccion(Direccion);
-
-                    System.out.println("INTRODUZCA EMAIL: ");
-                    Emails = String.valueOf(ent.nextLine());
-                    EE.setEmail(Emails);
-
-                    System.out.println("INTRODUZCA FECHA DE NACIMIENTO (AÑO-MES-DÍA): ");
-                    Scanner Fechs = new Scanner(System.in);
-                    Date fecs = Date.valueOf(Fechs.nextLine());
-                    EE.setFecha_Nac(fecs);
-
-                    System.out.println("CREE SU CONTRASEÑA: ");
-                    Claves = String.valueOf(ent.nextLine());
-                    EE.setClave(Claves);
-
-                    System.out.println("=============USUARIO AÑADIDO CORRECTAMENTE=========================");
-
-                    Col3.add(EE);
-                    empleadoDao.insert(EE);
-
-                    //LISTAR OBJETOS Y CREAR ARCHIVO
-                    //ENVIO PARAMETROS DEL NOMBRE DEL ARCHIVO, EL TOSTRING DEL OBJETO Y TEXTO QUE SE VISUALIZARA EN EL ARCHIVO      
-                    ManejoDeArchivos.agregarArchivo(nombreArchivo2, EE.toString());
-                    ManejoDeArchivos.leerArchivo(nombreArchivo2);
+                    negocioEmpleado.Login();
                     break;
                 case 0:
                     //SALIR DEL PROGRAMA
@@ -459,7 +415,7 @@ public class MysqlTest {
                     //ACTUALIZA A PARTIR DEL OBJETO QUE SE LE ENVÍA POR PARAMETRO
                     menuActualizar2(e);
                     empleadoDao.actualizar(e);
-                    ManejoDeArchivos.escribirArchivo(nombreArchivo2, e.toString());
+                    //ManejoDeArchivos.escribirArchivo(nombreArchivo2, e.toString());
                     break;
                 case 2:
 

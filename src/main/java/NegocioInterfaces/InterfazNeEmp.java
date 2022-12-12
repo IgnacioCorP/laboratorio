@@ -13,4 +13,5 @@ import dominio.Empleado;
  */
 public interface InterfazNeEmp {
     public Empleado sesion();
+    public Empleado Login();
 }
