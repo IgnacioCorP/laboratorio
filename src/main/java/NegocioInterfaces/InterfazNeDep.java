@@ -5,16 +5,17 @@
  */
 package NegocioInterfaces;
 
-import dominio.Cliente;
+import dominio.Departamento;
 import java.util.List;
-
 
 /**
  *
  * @author Alumno Mañana
  */
-public interface InterfazNeCli {
-    public  List<Cliente> listarClientesDec();
-    public List<Cliente> listarClientes();
-    public Cliente sesion();
+public interface InterfazNeDep {
+     public  List<Departamento> listarDepartamentosDec();
+     public Departamento crear();
+     public Departamento actualizar2();
+     public Departamento eliminar2();
+     public Departamento visualizar2();
 }

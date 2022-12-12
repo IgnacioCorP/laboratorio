@@ -91,17 +91,6 @@ public class Departamento implements Serializable{
         return "%" + ID_dep + "/" + Nombre + "/" + Descripcion;
     }
     
-     public static List<Departamento> listarDepartamentosDec() {
-        DepartamentoDao departamentoDao = new DepartamentoDao();
-        List<Departamento> departamentos = null;
-        
-        try {
-            departamentos = departamentoDao.seleccionar();
-            
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
-        }
-        return departamentos;
-    }
+    
     
 }

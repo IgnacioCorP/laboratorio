@@ -8,6 +8,7 @@ import Interfaces.InterfazLab;
 import Interfaces.InterfazPro;
 import ManejoArchivos.ManejoDeArchivos;
 import NegocioInterfaces.InterfazNeCli;
+import NegocioInterfaces.InterfazNeDep;
 import datos.ClienteDao;
 import datos.DepartamentoDao;
 import datos.EmpleadoDao;
@@ -31,6 +32,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import negocio.ClienteNegocio;
+import negocio.DepartamentoNegocio;
 
 /**
  * 1
@@ -51,9 +53,10 @@ public class MysqlTest {
     static InterfazDep departamentoDao = new DepartamentoDao();
     static InterfazLab laboratorioDao = new LaboratorioDao();
     static InterfazNeCli negocioCliente = new ClienteNegocio();
+    static InterfazNeDep negocioDepartamento = new DepartamentoNegocio();
     static Cliente CC = new Cliente();
     static Laboratorio LL = new Laboratorio();
-    static Departamento DD = new Departamento();
+    
     static Producto pp = new Producto();
     static Empleado EE = new Empleado();
 
@@ -66,7 +69,7 @@ public class MysqlTest {
 
     public static void main(String[] args) {
        
-        //menuPrincipal();
+        menuPrincipal();
     }
 
     private static void menuPrincipal() {
@@ -104,25 +107,7 @@ public class MysqlTest {
                     }
                     break;
                 case 2:
-                    System.out.println("INTRODUZCA  NIF CON EL QUE SE REGISTRO: ");
-                    String nif = ent.nextLine();
-                    String clave;
-                    //Cliente cliente = null;
-                    for (int i = 0; i < negocioCliente.listarClientesDec().size(); i++) {
-                        //SI ESE CLIENTE EXISTE, ENTRA EN LA CONDICIÓN
-                        if (nif.equals(negocioCliente.listarClientesDec().get(i).getNif())) {
-                            System.out.println("INTRODUZCA SU CONTRASEÑA: ");
-                            clave = ent.nextLine();
-                            //MIENTRAS LA CONTRASEÑA SEA INCORRECTA, VUELVA A INTRODUCIR LA CONTRASEÑA
-                            while (!clave.equals(negocioCliente.listarClientesDec().get(i).getClave())) {
-                                System.out.println("PORFAVOR INTRODUZCA DE NUEVO LA CONTRASEÑA: ");
-                                clave = ent.nextLine();
-                            }
-                            menuUsuario(negocioCliente.listarClientesDec().get(i));
-
-                        }
-                    }
-
+                     negocioCliente.sesion();
                     break;
                 case 3:
                     //CREAR OBJETO EMPLEADO 
@@ -161,10 +146,7 @@ public class MysqlTest {
                     Scanner Clave = new Scanner(System.in);
                     String Claves = String.valueOf(Clave.nextLine());
                     CC.setClave(Claves);
-
                     System.out.println("=============USUARIO AÑADIDO CORRECTAMENTE=========================");
-
-                    Col1.add(CC);
                     clienteDao.insert(CC);
 
                     //LISTAR OBJETOS Y CREAR ARCHIVO
@@ -751,75 +733,19 @@ public class MysqlTest {
                 case "DEPARTAMENTOS":
                     switch (opc) {
                         case 1:
-                            System.out.println("INTRODUZCA NOMBRE DEL DEPARTAMENTO: ");
-                            Scanner NOM = new Scanner(System.in);
-                            String NOMS = String.valueOf(NOM.nextLine());
-                            DD.setNombre(NOMS);
-
-                            System.out.println("INTRODUZCA DESCRIPCIÓN DEL DEPARTAMENTO: ");
-                            Scanner Des = new Scanner(System.in);
-                            String DESC = String.valueOf(Des.nextLine());
-                            DD.setDescripcion(DESC);
-
-                            System.out.println("=============DEPARTAMENTO AÑADIDO CORRECTAMENTE=========================");
-
-                            departamentoDao.insert(DD);
-                            ManejoDeArchivos.escribirArchivo(nombreArchivo4, DD.toString());
+                            negocioDepartamento.crear();
+                           
                             break;
                         case 2:
-                            System.out.println("INTRODUZCA ID DE DEPARTAMENTO: ");
-                            int idd = ent.nextInt();
-                            for (int i = 0; i < Departamento.listarDepartamentosDec().size(); i++) {
-                                if (idd == Departamento.listarDepartamentosDec().get(i).getID_dep()) {
-                                    DD = Departamento.listarDepartamentosDec().get(i);
-
-                                    System.out.println("INTRODUZCA NOMBRE DEL DEPARTAMENTO: ");
-                                    Scanner NOMs = new Scanner(System.in);
-                                    NOMS = String.valueOf(NOMs.nextLine());
-                                    DD.setNombre(NOMS);
-
-                                    System.out.println("INTRODUZCA DESCRIPCIÓN DEL DEPARTAMENTO: ");
-                                    Scanner DesS = new Scanner(System.in);
-                                    String DESCS = String.valueOf(DesS.nextLine());
-                                    DD.setDescripcion(DESCS);
-
-                                    departamentoDao.actualizar(DD);
-                                    ManejoDeArchivos.escribirArchivo(nombreArchivo4, DD.toString());
-
-                                }
-                            }
+                            negocioDepartamento.actualizar2();
+                          
                             break;
                         case 3:
-                            System.out.println("INTRODUZCA ID DE DEPARTAMENTO: ");
-                            int iiidd = ent.nextInt();
-                            for (int i = 0; i < Departamento.listarDepartamentosDec().size(); i++) {
-                                if (iiidd == Departamento.listarDepartamentosDec().get(i).getID_dep()) {
-                                    DD = Departamento.listarDepartamentosDec().get(i);
-
-                                    char y = 'Y';
-
-                                    if (y == 'Y' || y == 'y') {
-                                        pp = Producto.listarProductosDec().get(i);
-                                        departamentoDao.eliminar(DD);
-                                        ManejoDeArchivos.escribirArchivo(nombreArchivo4, DD.toString());
-                                        System.out.println("SE HA ELIMINADO CORREACTAMENTE");
-
-                                    } else if (y == 'n' || y == 'N') {
-                                        System.out.println("NO SE HA ELIMINADO");
-                                    }
-                                }
-                            }
+                             negocioDepartamento.eliminar2();
+                           
                             break;
                         case 4:
-                              try {
-                            List<Departamento> departamentos = departamentoDao.seleccionar();
-                            departamentos.forEach(Departamento -> {
-                                System.out.println("Departamento = " + Departamento);
-                            }
-                            );
-                        } catch (SQLException ex) {
-                            ex.printStackTrace(System.out);
-                        }
+                             negocioDepartamento.visualizar2();
                         break;
                         case 5:
                             System.out.println("INTRODUZCA  EL NOMBRE A BUSCAR: ");
