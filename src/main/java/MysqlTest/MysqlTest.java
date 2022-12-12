@@ -9,15 +9,16 @@ import Interfaces.InterfazPro;
 import ManejoArchivos.ManejoDeArchivos;
 import NegocioInterfaces.InterfazNeCli;
 import NegocioInterfaces.InterfazNeDep;
+import NegocioInterfaces.InterfazNeEmp;
 import datos.ClienteDao;
 import datos.DepartamentoDao;
 import datos.EmpleadoDao;
 import datos.LaboratorioDao;
 import datos.ProductoDao;
 import dominio.Cliente;
-//import static dominio.Cliente.listarClientesDec;
 import dominio.Departamento;
 import dominio.Empleado;
+import static dominio.Empleado.listarEmpleadosDec;
 import dominio.Laboratorio;
 import dominio.Producto;
 import java.time.Instant;
@@ -33,6 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import negocio.ClienteNegocio;
 import negocio.DepartamentoNegocio;
+import negocio.EmpleadoNegocio;
 
 /**
  * 1
@@ -54,9 +56,10 @@ public class MysqlTest {
     static InterfazLab laboratorioDao = new LaboratorioDao();
     static InterfazNeCli negocioCliente = new ClienteNegocio();
     static InterfazNeDep negocioDepartamento = new DepartamentoNegocio();
+    static InterfazNeEmp negocioEmpleado = new EmpleadoNegocio();
     static Cliente CC = new Cliente();
     static Laboratorio LL = new Laboratorio();
-    
+
     static Producto pp = new Producto();
     static Empleado EE = new Empleado();
 
@@ -64,11 +67,10 @@ public class MysqlTest {
     static String nombreArchivo = "CLIENTES.txt";
     static String nombreArchivo2 = "EMPLEADOS.txt";
     static String nombreArchivo3 = "PRODUCTOS.txt";
-    static String nombreArchivo4 = "DEPARTAMENTOS.txt";
     static String nombreArchivo5 = "LABORATORIOS.txt";
 
     public static void main(String[] args) {
-       
+        //negocioEmpleado.sesion();
         menuPrincipal();
     }
 
@@ -86,28 +88,10 @@ public class MysqlTest {
             switch (opc) {
 
                 case 1:
-                    System.out.println("INTRODUZCA  NIF CON EL QUE SE REGISTRO: ");
-                    String NIF = ent.nextLine();
-                    String contraseña;
-                    //RECORRER LISTA DE EMPLEADOS MEDIANTE UN MÉTODO QUE SE HA CREADO EN LA CLASE EMPLEADO
-                    for (int i = 0; i < Empleado.listarEmpleadosDec().size(); i++) {
-                        //SI ESE EMPLEADO EXISTE, ENTRA EN LA CONDICIÓN
-                        if (NIF.equals(Empleado.listarEmpleadosDec().get(i).getNif())) {
-                            System.out.println("INTRODUZCA SU CONTRASEÑA: ");
-                            contraseña = ent.nextLine();
-                            //MIENTRAS LA CONTRASEÑA SEA INCORRECTA, VUELVA A INTRODUCIR LA CONTRASEÑA
-                            while (!contraseña.equals(Empleado.listarEmpleadosDec().get(i).getClave())) {
-                                System.out.println("PORFAVOR INTRODUZCA DE NUEVO LA CONTRASEÑA: ");
-                                contraseña = ent.nextLine();
-                            }
-
-                            menuAdmin(Empleado.listarEmpleadosDec().get(i));
-
-                        }
-                    }
+                    negocioEmpleado.sesion();
                     break;
                 case 2:
-                     negocioCliente.sesion();
+                    negocioCliente.sesion();
                     break;
                 case 3:
                     //CREAR OBJETO EMPLEADO 
@@ -455,7 +439,7 @@ public class MysqlTest {
         }
     }
 
-    private static void menuAdmin(Empleado e) {
+    public static void menuAdmin(Empleado e) {
         int opc = -1;
         while (opc != 0) {
             System.out.println("=====================MENÚ ADMINISTRADOR=====================");
@@ -734,41 +718,28 @@ public class MysqlTest {
                     switch (opc) {
                         case 1:
                             negocioDepartamento.crear();
-                           
+
                             break;
                         case 2:
                             negocioDepartamento.actualizar2();
-                          
+
                             break;
                         case 3:
-                             negocioDepartamento.eliminar2();
-                           
+                            negocioDepartamento.eliminar2();
+
                             break;
                         case 4:
-                             negocioDepartamento.visualizar2();
-                        break;
+                            negocioDepartamento.visualizar2();
+                            break;
                         case 5:
-                            System.out.println("INTRODUZCA  EL NOMBRE A BUSCAR: ");
-                            String NOMBRE = ent.nextLine();
-                            try {
-                                List<Departamento> departamentos = departamentoDao.seleccionar2(NOMBRE);
-                                departamentos.forEach(Departamento -> {
-                                    System.out.println("Departamento = " + Departamento);
-                                }
-                                );
-                            } catch (SQLException ex) {
-                                ex.printStackTrace(System.out);
-                            }
-
+                            negocioDepartamento.buscar2();
                             break;
                         case 0:
                             break;
                         default:
                             System.out.println("ELIJA UNA OPCIÓN VÁLIDA");
                     }
-
                     break;
-
                 case "LABORATORIOS":
                     switch (opc) {
                         case 1:

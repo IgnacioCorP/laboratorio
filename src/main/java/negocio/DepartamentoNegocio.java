@@ -108,4 +108,19 @@ public class DepartamentoNegocio implements InterfazNeDep {
         }
         return null;
     }
+
+    public Departamento buscar2() {
+        System.out.println("INTRODUZCA  EL NOMBRE A BUSCAR: ");
+        String NOMBRE = ent.nextLine();
+        try {
+            List<Departamento> departamentos = departamentoDao.seleccionar2(NOMBRE);
+            departamentos.forEach(Departamento -> {
+                System.out.println("Departamento = " + Departamento);
+            }
+            );
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return null;
+    }
 }

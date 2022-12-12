@@ -18,4 +18,5 @@ public interface InterfazNeDep {
      public Departamento actualizar2();
      public Departamento eliminar2();
      public Departamento visualizar2();
+     public Departamento buscar2();
 }
