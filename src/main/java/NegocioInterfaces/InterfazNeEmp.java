@@ -14,4 +14,8 @@ import dominio.Empleado;
 public interface InterfazNeEmp {
     public Empleado sesion();
     public Empleado Login();
+    public void menuAdmin(Empleado e);
+    public void menuActualizar2(Empleado e);
+    public void menuTablas(Empleado e);
+    public void menuCrud(String entidad);
 }

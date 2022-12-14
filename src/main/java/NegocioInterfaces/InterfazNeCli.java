@@ -17,4 +17,7 @@ public interface InterfazNeCli {
     public  List<Cliente> listarClientesDec();
     public List<Cliente> listarClientes();
     public Cliente sesion();
+    public Cliente Login();
+    public void menuUsuario(Cliente c);
+    public  void menuActualizar(Cliente c);
 }
