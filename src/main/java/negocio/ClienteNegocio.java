@@ -51,7 +51,7 @@ public class ClienteNegocio implements InterfazNeCli {
 
     public Cliente sesion() {
         //RECORRER LISTA DE EMPLEADOS MEDIANTE UN MÉTODO QUE SE HA CREADO EN LA CLASE CLIENTE
-        System.out.println("INTRODUZCA  NIF CON EL QUE SE REGISTRO: ");
+        System.out.println("INTRODUZCA  EMAIL: ");
         String nif = ent.nextLine();
         String clave;
         Cliente cliente = null;
@@ -59,7 +59,7 @@ public class ClienteNegocio implements InterfazNeCli {
 
         for (int i = 0; i < listarClientesDec().size(); i++) {
             //SI ESE CLIENTE EXISTE, ENTRA EN LA CONDICIÓN
-            if (nif.equals(listarClientesDec().get(i).getNif())) {
+            if (nif.equals(listarClientesDec().get(i).getEmail())) {
                 System.out.println("INTRODUZCA SU CONTRASEÑA: ");
                 clave = ent.nextLine();
                 existe = true;
