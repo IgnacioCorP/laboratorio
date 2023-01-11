@@ -55,6 +55,7 @@ public class MysqlTest {
     private static void menuPrincipal() {
         int opc = -1;
         while (opc != 0) {
+            
             System.out.println("=====================INGRESAR COMO=====================");
             System.out.println("1) INICIAR SESIÓN COMO ADMINISTRADOR (EMPLEADO)");
             System.out.println("2) INICIAR SESIÓN COMO CLIENTE");
